@@ -1,0 +1,9 @@
+{
+  "workflow_text": "build-core-lite-prod-yml-v002.txt",
+  "workflow_zip": "build-core-lite-prod-workflow-v002.zip",
+  "target_repo": "GCAT-BCAT-Engine/core-lite-prod",
+  "actual_path": ".github/workflows/build-core-lite-prod.yml",
+  "change_from_v001": "Adds zipped generated output artifact core-lite-prod-generated-v001.zip plus manifest.",
+  "sha256_text": "494baabdc69ec74479faa293099fde1677339fde88856593ccb3d0f5ad1caa9a",
+  "sha256_zip": "fb71c25cd01082f1775d3752301af915e422a76619d2e2af33c17718247856e0"
+}

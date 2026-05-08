@@ -1,0 +1,151 @@
+# GCAT-BCAT-Engine/core-lite-prod operational bootstrap
+#
+# INSTALL PATH:
+# .github/workflows/build-core-lite-prod.yml
+#
+# This is intentionally one workflow file. It generates the full operational
+# substrate, tests it in GitHub Ubuntu, uploads artifacts, then optionally
+# commits generated files back to core-lite-prod.
+
+name: Build core-lite-prod
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_changes:
+        description: "Commit generated operational substrate after tests pass"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout core-lite-prod
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Generate operational core-lite-prod files
+        shell: python
+        run: |
+          import base64
+          from pathlib import Path
+
+          files = '{\n  ".github/workflows/test.yml": "bmFtZTogY29yZS1saXRlLXByb2QtdGVzdAoKb246CiAgd29ya2Zsb3dfZGlzcGF0Y2g6CiAgcHVzaDoKICBwdWxsX3JlcXVlc3Q6Cgpqb2JzOgogIHRlc3Q6CiAgICBydW5zLW9uOiB1YnVudHUtbGF0ZXN0CgogICAgc3RlcHM6CiAgICAgIC0gbmFtZTogQ2hlY2tvdXQKICAgICAgICB1c2VzOiBhY3Rpb25zL2NoZWNrb3V0QHY0CgogICAgICAtIG5hbWU6IFNldCB1cCBQeXRob24KICAgICAgICB1c2VzOiBhY3Rpb25zL3NldHVwLXB5dGhvbkB2NQogICAgICAgIHdpdGg6CiAgICAgICAgICBweXRob24tdmVyc2lvbjogIjMuMTEiCgogICAgICAtIG5hbWU6IEluc3RhbGwKICAgICAgICBydW46IHwKICAgICAgICAgIHB5dGhvbiAtbSBwaXAgaW5zdGFsbCAtLXVwZ3JhZGUgcGlwCiAgICAgICAgICBweXRob24gLW0gcGlwIGluc3RhbGwgLWUgIi5bZGV2XSIKCiAgICAgIC0gbmFtZTogVGVzdAogICAgICAgIHJ1bjogcHl0ZXN0IC1xCgogICAgICAtIG5hbWU6IFNlbGZ0ZXN0CiAgICAgICAgcnVuOiBjb3JlLWxpdGUtcHJvZCBzZWxmdGVzdCAtLW91dCBvdXQKCiAgICAgIC0gbmFtZTogUnVuIGFsbG93CiAgICAgICAgcnVuOiBjb3JlLWxpdGUtcHJvZCBydW4gZXhhbXBsZXMvYWxsb3cuanNvbiAtLW91dCBvdXRfYWxsb3cKCiAgICAgIC0gbmFtZTogUnVuIHNhbmRib3gKICAgICAgICBydW46IGNvcmUtbGl0ZS1wcm9kIHJ1biBleGFtcGxlcy9zYW5kYm94Lmpzb24gLS1vdXQgb3V0X3NhbmRib3gKCiAgICAgIC0gbmFtZTogVXBsb2FkIG9wZXJhdGlvbmFsIGFydGlmYWN0cwogICAgICAgIHVzZXM6IGFjdGlvbnMvdXBsb2FkLWFydGlmYWN0QHY0CiAgICAgICAgd2l0aDoKICAgICAgICAgIG5hbWU6IGNvcmUtbGl0ZS1wcm9kLW9wZXJhdGlvbmFsLWFydGlmYWN0cwogICAgICAgICAgcGF0aDogfAogICAgICAgICAgICBvdXQvc2VsZnRlc3RfcmVwb3J0Lmpzb24KICAgICAgICAgICAgb3V0X2FsbG93L3J1bl9yZXBvcnQuanNvbgogICAgICAgICAgICBvdXRfYWxsb3cvcmVjZWlwdC5qc29uCiAgICAgICAgICAgIG91dF9hbGxvdy9hcnRpZmFjdF9tYW5pZmVzdC5qc29uCiAgICAgICAgICAgIG91dF9zYW5kYm94L3J1bl9yZXBvcnQuanNvbgogICAgICAgICAgICBvdXRfc2FuZGJveC9yZWNlaXB0Lmpzb24KICAgICAgICAgICAgb3V0X3NhbmRib3gvYXJ0aWZhY3RfbWFuaWZlc3QuanNvbgo=",\n  "ARCHITECTURE.md": "IyBjb3JlLWxpdGUtcHJvZCBBcmNoaXRlY3R1cmUKCiMjIE9wZXJhdGlvbmFsIEZsb3cKCmBgYHRleHQKaW5wdXQKICAtPiBpbmdlc3Rpb24KICAtPiBUVkMgYm91bmRhcnkKICAtPiBDR0UgZGVjaXNpb24KICAtPiBzYW5kYm94IGRyeS1ydW4KICAtPiByZWNlaXB0CiAgLT4gYXJ0aWZhY3QgcmVwb3J0CmBgYAoKIyMgRGVjaXNpb24gU3RhdGVzCgpgYGB0ZXh0CkFMTE9XCkRFTlkKU0FOREJPWApGQUlMX0NMT1NFRApgYGAK",\n  "BUILD_VERIFICATION.json": "ewogICJleHBlY3RlZF9jaGVja3MiOiBbCiAgICAicHl0ZXN0IC1xIiwKICAgICJjb3JlLWxpdGUtcHJvZCBzZWxmdGVzdCAtLW91dCBvdXQiLAogICAgImNvcmUtbGl0ZS1wcm9kIHJ1biBleGFtcGxlcy9hbGxvdy5qc29uIC0tb3V0IG91dF9hbGxvdyIsCiAgICAiY29yZS1saXRlLXByb2QgcnVuIGV4YW1wbGVzL3NhbmRib3guanNvbiAtLW91dCBvdXRfc2FuZGJveCIKICBdCn0=",\n  "PRODUCT.md": "IyBjb3JlLWxpdGUtcHJvZCB2MDAxCgpUaGlzIHJlcG8gdmFsaWRhdGVzIHRoZSBvcGVyYXRpb25hbCBjb3JlIHN1cmZhY2UgYmVmb3JlIHRoZSBwdWJsaWMgYEdDQVQtQkNBVC1FbmdpbmUvY29yZS1saXRlYCByZXBvIGlzIHVwZGF0ZWQuCg==",\n  "README.md": "IyBjb3JlLWxpdGUtcHJvZAoKT3BlcmF0aW9uYWwgY29yZSBzZXJ2aWNlcyBzdXJmYWNlIGZvciBgR0NBVC1CQ0FULUVuZ2luZWAuCgojIyBSb2xlCgpgY29yZS1saXRlLXByb2RgIGlzIHRoZSBvcmdhbml6YXRpb24gb3BlcmF0aW9uYWwgc3Vic3RyYXRlIHRoYXQgbXVzdCB3b3JrIGJlZm9yZSB0aGUgdXNlci1mYWNpbmcgYGNvcmUtbGl0ZWAgcGFja2FnZSBpcyBhdWdtZW50ZWQuCgpUaGlzIHJlcG8gaXMgZm9yOgoKYGBgdGV4dAppbmdlc3Rpb24gb3BlcmF0aW9ucwpUVkMgYm91bmRhcnkgY2hlY2tzCkNHRSBkZWNpc2lvbnMKc2FuZGJveCBkcnktcnVucwpyZWNlaXB0IHJlY29yZGluZwphcnRpZmFjdCByZXBvcnRzCm9wZXJhdGlvbmFsIHNlbGZ0ZXN0cwpgYGAKCkl0IGlzICoqbm90KiogdGhlIHB1YmxpYyB1c2VyIHBhY2thZ2UuIFRoZSBwdWJsaWMgdXNlciBwYWNrYWdlIHJlbWFpbnM6CgpgYGB0ZXh0CkdDQVQtQkNBVC1FbmdpbmUvY29yZS1saXRlCmBgYAoKIyMgRG9uZSBDcml0ZXJpYQoKYGBgYmFzaApweXRob24gLW0gcGlwIGluc3RhbGwgLWUgIi5bZGV2XSIKcHl0ZXN0IC1xCmNvcmUtbGl0ZS1wcm9kIHNlbGZ0ZXN0IC0tb3V0IG91dApjb3JlLWxpdGUtcHJvZCBydW4gZXhhbXBsZXMvYWxsb3cuanNvbiAtLW91dCBvdXQKY29yZS1saXRlLXByb2QgcnVuIGV4YW1wbGVzL3NhbmRib3guanNvbiAtLW91dCBvdXRfc2FuZGJveApgYGAK",\n  "SECURITY.md": "IyBTZWN1cml0eQoKQ29yZS1saXRlLXByb2QgdjAwMSBkb2VzIG5vdCByZXF1aXJlIGxpdmUgc2VjcmV0cy4KCkl0IHJlamVjdHMgcmF3IHNlY3JldC1saWtlIGZpZWxkcyBpbiBpbnB1dHM6CgpgYGB0ZXh0CnNlY3JldAphcGlfa2V5CnBhc3N3b3JkCnByaXZhdGVfa2V5CmBgYAo=",\n  "examples/allow.json": "ewogICJzb3VyY2UiOiAiZXhhbXBsZS5hbGxvdyIsCiAgInBheWxvYWQiOiB7CiAgICAiYWN0aW9uIjogImNvbnRpbnVlIiwKICAgICJyaXNrIjogMC4xCiAgfSwKICAibWV0YWRhdGEiOiB7CiAgICAiYXV0aG9yaXR5X3JlZiI6ICJhdXRoOm9yZzpsb2NhbCIsCiAgICAicG9saWN5X3JlZiI6ICJwb2xpY3k6Y29yZS1saXRlLXByb2QtdjAwMSIKICB9LAogICJleHBlY3RlZF9kZWNpc2lvbiI6ICJBTExPVyIKfQ==",\n  "examples/deny.json": "ewogICJzb3VyY2UiOiAiZXhhbXBsZS5kZW55IiwKICAicGF5bG9hZCI6IHsKICAgICJhY3Rpb24iOiAiZGlzYWJsZV9nb3Zlcm5hbmNlIiwKICAgICJyaXNrIjogMC4xCiAgfSwKICAibWV0YWRhdGEiOiB7CiAgICAiYXV0aG9yaXR5X3JlZiI6ICJhdXRoOm9yZzpsb2NhbCIsCiAgICAicG9saWN5X3JlZiI6ICJwb2xpY3k6Y29yZS1saXRlLXByb2QtdjAwMSIKICB9LAogICJleHBlY3RlZF9kZWNpc2lvbiI6ICJERU5ZIgp9",\n  "examples/fail_closed.json": "ewogICJzb3VyY2UiOiAiZXhhbXBsZS5mYWlsX2Nsb3NlZCIsCiAgInBheWxvYWQiOiB7CiAgICAicmlzayI6IDAuMQogIH0sCiAgIm1ldGFkYXRhIjogewogICAgImF1dGhvcml0eV9yZWYiOiAiYXV0aDpvcmc6bG9jYWwiLAogICAgInBvbGljeV9yZWYiOiAicG9saWN5OmNvcmUtbGl0ZS1wcm9kLXYwMDEiCiAgfSwKICAiZXhwZWN0ZWRfZGVjaXNpb24iOiAiRkFJTF9DTE9TRUQiCn0=",\n  "examples/sandbox.json": "ewogICJzb3VyY2UiOiAiZXhhbXBsZS5zYW5kYm94IiwKICAicGF5bG9hZCI6IHsKICAgICJhY3Rpb24iOiAic3RhdGVfbXV0YXRpb24iLAogICAgInJpc2siOiAwLjU1CiAgfSwKICAibWV0YWRhdGEiOiB7CiAgICAiYXV0aG9yaXR5X3JlZiI6ICJhdXRoOm9yZzpsb2NhbCIsCiAgICAicG9saWN5X3JlZiI6ICJwb2xpY3k6Y29yZS1saXRlLXByb2QtdjAwMSIsCiAgICAic2FuZGJveF9hcHByb3ZlZCI6IHRydWUKICB9LAogICJleHBlY3RlZF9kZWNpc2lvbiI6ICJBTExPVyIKfQ==",\n  "manifest.json": "ewogICJuYW1lIjogImNvcmUtbGl0ZS1wcm9kIiwKICAidmVyc2lvbiI6ICJ2MDAxIiwKICAicm9sZSI6ICJvcmctb3BlcmF0aW9uYWwtY29yZS1zZXJ2aWNlcyIsCiAgInNvdXJjZV9yZXBvIjogIkdDQVQtQkNBVC1FbmdpbmUvY29yZS1saXRlLXByb2QiLAogICJwdWJsaWNfdXNlcl9wYWNrYWdlX3JlcG8iOiAiR0NBVC1CQ0FULUVuZ2luZS9jb3JlLWxpdGUiLAogICJjYXBhYmlsaXRpZXMiOiBbCiAgICAiaW5nZXN0aW9uIiwKICAgICJ0dmNfYm91bmRhcnkiLAogICAgImNnZSIsCiAgICAic2FuZGJveF9kcnlfcnVuIiwKICAgICJyZWNlaXB0cyIsCiAgICAiYXJ0aWZhY3RfcmVwb3J0cyIsCiAgICAic2VsZnRlc3QiCiAgXSwKICAiZGVjaXNpb25fc3RhdGVzIjogWwogICAgIkFMTE9XIiwKICAgICJERU5ZIiwKICAgICJTQU5EQk9YIiwKICAgICJGQUlMX0NMT1NFRCIKICBdCn0=",\n  "pyproject.toml": "W2J1aWxkLXN5c3RlbV0KcmVxdWlyZXMgPSBbInNldHVwdG9vbHM+PTY4Il0KYnVpbGQtYmFja2VuZCA9ICJzZXR1cHRvb2xzLmJ1aWxkX21ldGEiCgpbcHJvamVjdF0KbmFtZSA9ICJjb3JlLWxpdGUtcHJvZCIKdmVyc2lvbiA9ICIwLjEuMCIKZGVzY3JpcHRpb24gPSAiT3BlcmF0aW9uYWwgY29yZSBzZXJ2aWNlcyBzdWJzdHJhdGUgZm9yIEdDQVQtQkNBVC1FbmdpbmUuIgpyZXF1aXJlcy1weXRob24gPSAiPj0zLjEwIgpkZXBlbmRlbmNpZXMgPSBbXQoKW3Byb2plY3Qub3B0aW9uYWwtZGVwZW5kZW5jaWVzXQpkZXYgPSBbInB5dGVzdD49OC4wIl0KCltwcm9qZWN0LnNjcmlwdHNdCmNvcmUtbGl0ZS1wcm9kID0gImNvcmVfbGl0ZV9wcm9kLmNsaTptYWluIgoKW3Rvb2wuc2V0dXB0b29scy5wYWNrYWdlcy5maW5kXQp3aGVyZSA9IFsic3JjIl0K",\n  "src/core_lite_prod/__init__.py": "X192ZXJzaW9uX18gPSAnMC4xLjAnCg==",\n  "src/core_lite_prod/cli.py": "ZnJvbSAuY29yZSBpbXBvcnQgbWFpbgoKaWYgX19uYW1lX18gPT0gIl9fbWFpbl9fIjoKICAgIG1haW4oKQo=",\n  "src/core_lite_prod/core.py": "ZnJvbSBfX2Z1dHVyZV9fIGltcG9ydCBhbm5vdGF0aW9ucwoKaW1wb3J0IGFyZ3BhcnNlCmltcG9ydCBoYXNobGliCmltcG9ydCBqc29uCmZyb20gZGF0ZXRpbWUgaW1wb3J0IGRhdGV0aW1lLCB0aW1lem9uZQpmcm9tIHBhdGhsaWIgaW1wb3J0IFBhdGgKZnJvbSB0eXBpbmcgaW1wb3J0IEFueQoKCmRlZiBub3dfdXRjKCkgLT4gc3RyOgogICAgcmV0dXJuIGRhdGV0aW1lLm5vdyh0aW1lem9uZS51dGMpLmlzb2Zvcm1hdCgpCgoKZGVmIGNhbm9uaWNhbCh2YWx1ZTogQW55KSAtPiBzdHI6CiAgICByZXR1cm4ganNvbi5kdW1wcyh2YWx1ZSwgc29ydF9rZXlzPVRydWUsIHNlcGFyYXRvcnM9KCIsIiwgIjoiKSwgZW5zdXJlX2FzY2lpPUZhbHNlKQoKCmRlZiBzaGEyNTZfdGV4dCh2YWx1ZTogc3RyKSAtPiBzdHI6CiAgICByZXR1cm4gaGFzaGxpYi5zaGEyNTYodmFsdWUuZW5jb2RlKCJ1dGYtOCIpKS5oZXhkaWdlc3QoKQoKCmRlZiByZWFkX2pzb24ocGF0aDogc3RyIHwgUGF0aCkgLT4gZGljdFtzdHIsIEFueV06CiAgICBkYXRhID0ganNvbi5sb2FkcyhQYXRoKHBhdGgpLnJlYWRfdGV4dChlbmNvZGluZz0idXRmLTgiKSkKICAgIGlmIG5vdCBpc2luc3RhbmNlKGRhdGEsIGRpY3QpOgogICAgICAgIHJhaXNlIFZhbHVlRXJyb3IoIkpTT04gaW5wdXQgbXVzdCBiZSBhbiBvYmplY3QuIikKICAgIHJldHVybiBkYXRhCgoKZGVmIHdyaXRlX2pzb24ocGF0aDogc3RyIHwgUGF0aCwgdmFsdWU6IEFueSkgLT4gTm9uZToKICAgIHRhcmdldCA9IFBhdGgocGF0aCkKICAgIHRhcmdldC5wYXJlbnQubWtkaXIocGFyZW50cz1UcnVlLCBleGlzdF9vaz1UcnVlKQogICAgdGFyZ2V0LndyaXRlX3RleHQoanNvbi5kdW1wcyh2YWx1ZSwgaW5kZW50PTIsIHNvcnRfa2V5cz1UcnVlLCBlbnN1cmVfYXNjaWk9RmFsc2UpLCBlbmNvZGluZz0idXRmLTgiKQoKCmRlZiBpbmdlc3QoZGF0YTogZGljdFtzdHIsIEFueV0pIC0+IGRpY3Rbc3RyLCBBbnldOgogICAgc291cmNlID0gc3RyKGRhdGEuZ2V0KCJzb3VyY2UiLCAidW5rbm93biIpKQogICAgcGF5bG9hZCA9IGRhdGEuZ2V0KCJwYXlsb2FkIiwgZGF0YSkKICAgIG1ldGFkYXRhID0gZGF0YS5nZXQoIm1ldGFkYXRhIiwge30pCgogICAgaWYgbm90IGlzaW5zdGFuY2UocGF5bG9hZCwgZGljdCk6CiAgICAgICAgcmV0dXJuIHsiZGVjaXNpb24iOiAiRkFJTF9DTE9TRUQiLCAicmVhc29ucyI6IFsiUGF5bG9hZCBtdXN0IGJlIGFuIG9iamVjdC4iXX0KICAgIGlmIG5vdCBpc2luc3RhbmNlKG1ldGFkYXRhLCBkaWN0KToKICAgICAgICByZXR1cm4geyJkZWNpc2lvbiI6ICJGQUlMX0NMT1NFRCIsICJyZWFzb25zIjogWyJNZXRhZGF0YSBtdXN0IGJlIGFuIG9iamVjdC4iXX0KCiAgICBlbnZlbG9wZSA9IHsic291cmNlIjogc291cmNlLCAicGF5bG9hZCI6IHBheWxvYWQsICJtZXRhZGF0YSI6IG1ldGFkYXRhfQogICAgZW52ZWxvcGVbImlucHV0X2hhc2giXSA9IHNoYTI1Nl90ZXh0KGNhbm9uaWNhbChlbnZlbG9wZSkpCiAgICBlbnZlbG9wZVsiZGVjaXNpb24iXSA9ICJBTExPVyIKICAgIGVudmVsb3BlWyJyZWFzb25zIl0gPSBbIklucHV0IGluZ2VzdGVkLiJdCiAgICByZXR1cm4gZW52ZWxvcGUKCgpkZWYgdHZjX2NoZWNrKGVudmVsb3BlOiBkaWN0W3N0ciwgQW55XSkgLT4gZGljdFtzdHIsIEFueV06CiAgICByYXdfc2VjcmV0X2tleXMgPSB7InNlY3JldCIsICJhcGlfa2V5IiwgInBhc3N3b3JkIiwgInByaXZhdGVfa2V5In0KCiAgICBkZWYgaGFzX3Jhd19zZWNyZXQodmFsdWU6IEFueSkgLT4gYm9vbDoKICAgICAgICBpZiBpc2luc3RhbmNlKHZhbHVlLCBkaWN0KToKICAgICAgICAgICAgZm9yIGtleSwgbmVzdGVkIGluIHZhbHVlLml0ZW1zKCk6CiAgICAgICAgICAgICAgICBpZiBrZXkubG93ZXIoKSBpbiByYXdfc2VjcmV0X2tleXM6CiAgICAgICAgICAgICAgICAgICAgcmV0dXJuIFRydWUKICAgICAgICAgICAgICAgIGlmIGhhc19yYXdfc2VjcmV0KG5lc3RlZCk6CiAgICAgICAgICAgICAgICAgICAgcmV0dXJuIFRydWUKICAgICAgICBpZiBpc2luc3RhbmNlKHZhbHVlLCBsaXN0KToKICAgICAgICAgICAgcmV0dXJuIGFueShoYXNfcmF3X3NlY3JldChpdGVtKSBmb3IgaXRlbSBpbiB2YWx1ZSkKICAgICAgICByZXR1cm4gRmFsc2UKCiAgICBpZiBoYXNfcmF3X3NlY3JldChlbnZlbG9wZSk6CiAgICAgICAgcmV0dXJuIHsiZGVjaXNpb24iOiAiREVOWSIsICJyZWFzb25zIjogWyJSYXcgc2VjcmV0LWxpa2UgZmllbGQgZGV0ZWN0ZWQuIl19CgogICAgbWV0YWRhdGEgPSBlbnZlbG9wZS5nZXQoIm1ldGFkYXRhIiwge30pCiAgICBtaXNzaW5nID0gW2tleSBmb3Iga2V5IGluICgiYXV0aG9yaXR5X3JlZiIsICJwb2xpY3lfcmVmIikgaWYgbm90IG1ldGFkYXRhLmdldChrZXkpXQogICAgaWYgbWlzc2luZzoKICAgICAgICByZXR1cm4geyJkZWNpc2lvbiI6ICJGQUlMX0NMT1NFRCIsICJyZWFzb25zIjogW2YiTWlzc2luZyBUVkMgcmVmczogeycsICcuam9pbihtaXNzaW5nKX0iXX0KCiAgICByZXR1cm4gewogICAgICAgICJkZWNpc2lvbiI6ICJBTExPVyIsCiAgICAgICAgInJlZnMiOiB7ImF1dGhvcml0eV9yZWYiOiBtZXRhZGF0YVsiYXV0aG9yaXR5X3JlZiJdLCAicG9saWN5X3JlZiI6IG1ldGFkYXRhWyJwb2xpY3lfcmVmIl19LAogICAgICAgICJyZWFzb25zIjogWyJUVkMgcmVmcyB2YWxpZGF0ZWQuIl0sCiAgICB9CgoKZGVmIGNnZV9kZWNpZGUoZW52ZWxvcGU6IGRpY3Rbc3RyLCBBbnldLCB0dmM6IGRpY3Rbc3RyLCBBbnldKSAtPiBkaWN0W3N0ciwgQW55XToKICAgIGlmIGVudmVsb3BlLmdldCgiZGVjaXNpb24iKSAhPSAiQUxMT1ciOgogICAgICAgIHJldHVybiB7ImRlY2lzaW9uIjogIkZBSUxfQ0xPU0VEIiwgInJlYXNvbnMiOiBbIkluZ2VzdGlvbiBkaWQgbm90IHBhc3MuIl19CiAgICBpZiB0dmMuZ2V0KCJkZWNpc2lvbiIpICE9ICJBTExPVyI6CiAgICAgICAgcmV0dXJuIHsiZGVjaXNpb24iOiAiRkFJTF9DTE9TRUQiLCAicmVhc29ucyI6IFsiVFZDIGRpZCBub3QgcGFzcy4iXSArIHR2Yy5nZXQoInJlYXNvbnMiLCBbXSl9CgogICAgcGF5bG9hZCA9IGVudmVsb3BlLmdldCgicGF5bG9hZCIsIHt9KQogICAgaWYgImFjdGlvbiIgbm90IGluIHBheWxvYWQ6CiAgICAgICAgcmV0dXJuIHsiZGVjaXNpb24iOiAiRkFJTF9DTE9TRUQiLCAicmlzayI6IDEuMCwgInJlYXNvbnMiOiBbIk1pc3NpbmcgYWN0aW9uLiJdfQoKICAgIGFjdGlvbiA9IHN0cihwYXlsb2FkLmdldCgiYWN0aW9uIikpCiAgICBpZiBhY3Rpb24gaW4geyJkaXNhYmxlX2dvdmVybmFuY2UiLCAiZGVsZXRlX2FsbCIsICJleGZpbHRyYXRlIn06CiAgICAgICAgcmV0dXJuIHsiZGVjaXNpb24iOiAiREVOWSIsICJyaXNrIjogMS4wLCAicmVhc29ucyI6IFtmIkhhcmQtZGVuaWVkIGFjdGlvbjoge2FjdGlvbn0iXX0KCiAgICB0cnk6CiAgICAgICAgcmlzayA9IG1heCgwLjAsIG1pbigxLjAsIGZsb2F0KHBheWxvYWQuZ2V0KCJyaXNrIiwgMC4wKSkpKQogICAgZXhjZXB0IChUeXBlRXJyb3IsIFZhbHVlRXJyb3IpOgogICAgICAgIHJpc2sgPSAxLjAKCiAgICBpZiBhY3Rpb24gPT0gInN0YXRlX211dGF0aW9uIiBvciByaXNrID49IDAuNDU6CiAgICAgICAgcmV0dXJuIHsiZGVjaXNpb24iOiAiU0FOREJPWCIsICJyaXNrIjogcmlzaywgInJlYXNvbnMiOiBbIlNhbmRib3ggcmV2aWV3IHJlcXVpcmVkLiJdfQoKICAgIHJldHVybiB7ImRlY2lzaW9uIjogIkFMTE9XIiwgInJpc2siOiByaXNrLCAicmVhc29ucyI6IFsiQ0dFIHBhc3NlZC4iXX0KCgpkZWYgc2FuZGJveF9ydW4oZW52ZWxvcGU6IGRpY3Rbc3RyLCBBbnldLCBjZ2U6IGRpY3Rbc3RyLCBBbnldKSAtPiBkaWN0W3N0ciwgQW55XToKICAgIGRlY2lzaW9uID0gY2dlLmdldCgiZGVjaXNpb24iKQogICAgaWYgZGVjaXNpb24gaW4geyJBTExPVyIsICJERU5ZIiwgIkZBSUxfQ0xPU0VEIn06CiAgICAgICAgcmV0dXJuIHsiZGVjaXNpb24iOiBkZWNpc2lvbiwgInJlYXNvbnMiOiBbIlNhbmRib3ggcHJlc2VydmVkIHRlcm1pbmFsIGRlY2lzaW9uLiJdICsgY2dlLmdldCgicmVhc29ucyIsIFtdKX0KCiAgICBpZiBkZWNpc2lvbiA9PSAiU0FOREJPWCIgYW5kIGVudmVsb3BlLmdldCgibWV0YWRhdGEiLCB7fSkuZ2V0KCJzYW5kYm94X2FwcHJvdmVkIikgaXMgVHJ1ZToKICAgICAgICByZXR1cm4geyJkZWNpc2lvbiI6ICJBTExPVyIsICJyZWFzb25zIjogWyJTYW5kYm94IGFwcHJvdmVkIGRldGVybWluaXN0aWMgZHJ5LXJ1bi4iXX0KCiAgICBpZiBkZWNpc2lvbiA9PSAiU0FOREJPWCI6CiAgICAgICAgcmV0dXJuIHsiZGVjaXNpb24iOiAiREVOWSIsICJyZWFzb25zIjogWyJTYW5kYm94IGFwcHJvdmFsIG1pc3NpbmcuIl19CgogICAgcmV0dXJuIHsiZGVjaXNpb24iOiAiRkFJTF9DTE9TRUQiLCAicmVhc29ucyI6IFsiVW5rbm93biBDR0UgZGVjaXNpb24uIl19CgoKZGVmIG1ha2VfcmVjZWlwdChldmVudF90eXBlOiBzdHIsIHN1YmplY3RfaGFzaDogc3RyLCBkZWNpc2lvbjogc3RyLCBkZXRhaWxzOiBkaWN0W3N0ciwgQW55XSkgLT4gZGljdFtzdHIsIEFueV06CiAgICByZWNlaXB0ID0gewogICAgICAgICJyZWNlaXB0X3ZlcnNpb24iOiAiY29yZS1saXRlLXByb2QudjAwMSIsCiAgICAgICAgInRpbWVzdGFtcF91dGMiOiBub3dfdXRjKCksCiAgICAgICAgImV2ZW50X3R5cGUiOiBldmVudF90eXBlLAogICAgICAgICJzdWJqZWN0X2hhc2giOiBzdWJqZWN0X2hhc2gsCiAgICAgICAgImRlY2lzaW9uIjogZGVjaXNpb24sCiAgICAgICAgImRldGFpbHMiOiBkZXRhaWxzLAogICAgfQogICAgcmVjZWlwdFsicmVjZWlwdF9oYXNoIl0gPSBzaGEyNTZfdGV4dChjYW5vbmljYWwocmVjZWlwdCkpCiAgICByZXR1cm4gcmVjZWlwdAoKCmRlZiBydW5fZmlsZShwYXRoOiBzdHIgfCBQYXRoLCBvdXRfZGlyOiBzdHIgfCBQYXRoKSAtPiBkaWN0W3N0ciwgQW55XToKICAgIG91dCA9IFBhdGgob3V0X2RpcikKICAgIG91dC5ta2RpcihwYXJlbnRzPVRydWUsIGV4aXN0X29rPVRydWUpCgogICAgZGF0YSA9IHJlYWRfanNvbihwYXRoKQogICAgZW52ZWxvcGUgPSBpbmdlc3QoZGF0YSkKICAgIHR2YyA9IHR2Y19jaGVjayhlbnZlbG9wZSkKICAgIGNnZSA9IGNnZV9kZWNpZGUoZW52ZWxvcGUsIHR2YykKICAgIHNhbmRib3ggPSBzYW5kYm94X3J1bihlbnZlbG9wZSwgY2dlKQoKICAgIHN1YmplY3RfaGFzaCA9IGVudmVsb3BlLmdldCgiaW5wdXRfaGFzaCIsIHNoYTI1Nl90ZXh0KGNhbm9uaWNhbChkYXRhKSkpCiAgICByZWNlaXB0ID0gbWFrZV9yZWNlaXB0KCJjb3JlLWxpdGUtcHJvZC5ydW4iLCBzdWJqZWN0X2hhc2gsIHNhbmRib3hbImRlY2lzaW9uIl0sIHsKICAgICAgICAiaW5nZXN0aW9uIjogZW52ZWxvcGUsCiAgICAgICAgInR2YyI6IHR2YywKICAgICAgICAiY2dlIjogY2dlLAogICAgICAgICJzYW5kYm94Ijogc2FuZGJveCwKICAgIH0pCgogICAgcmVwb3J0ID0gewogICAgICAgICJkZWNpc2lvbiI6IHNhbmRib3hbImRlY2lzaW9uIl0sCiAgICAgICAgImluZ2VzdGlvbiI6IGVudmVsb3BlLAogICAgICAgICJ0dmMiOiB0dmMsCiAgICAgICAgImNnZSI6IGNnZSwKICAgICAgICAic2FuZGJveCI6IHNhbmRib3gsCiAgICAgICAgInJlY2VpcHQiOiByZWNlaXB0LAogICAgfQoKICAgIHdyaXRlX2pzb24ob3V0IC8gInJ1bl9yZXBvcnQuanNvbiIsIHJlcG9ydCkKICAgIHdyaXRlX2pzb24ob3V0IC8gInJlY2VpcHQuanNvbiIsIHJlY2VpcHQpCiAgICB3cml0ZV9qc29uKG91dCAvICJhcnRpZmFjdF9tYW5pZmVzdC5qc29uIiwgewogICAgICAgICJkZWNpc2lvbiI6ICJBTExPVyIsCiAgICAgICAgImFydGlmYWN0cyI6IFsKICAgICAgICAgICAgeyJwYXRoIjogInJ1bl9yZXBvcnQuanNvbiIsICJoYXNoIjogc2hhMjU2X3RleHQoY2Fub25pY2FsKHJlcG9ydCkpfSwKICAgICAgICAgICAgeyJwYXRoIjogInJlY2VpcHQuanNvbiIsICJoYXNoIjogc2hhMjU2X3RleHQoY2Fub25pY2FsKHJlY2VpcHQpKX0sCiAgICAgICAgXSwKICAgIH0pCiAgICByZXR1cm4gcmVwb3J0CgoKZGVmIHNlbGZ0ZXN0KG91dF9kaXI6IHN0ciB8IFBhdGgpIC0+IGRpY3Rbc3RyLCBBbnldOgogICAgb3V0ID0gUGF0aChvdXRfZGlyKQogICAgb3V0Lm1rZGlyKHBhcmVudHM9VHJ1ZSwgZXhpc3Rfb2s9VHJ1ZSkKICAgIGNhc2VzID0gWwogICAgICAgICgiYWxsb3ciLCAiZXhhbXBsZXMvYWxsb3cuanNvbiIsICJBTExPVyIpLAogICAgICAgICgiZGVueSIsICJleGFtcGxlcy9kZW55Lmpzb24iLCAiREVOWSIpLAogICAgICAgICgic2FuZGJveCIsICJleGFtcGxlcy9zYW5kYm94Lmpzb24iLCAiQUxMT1ciKSwKICAgICAgICAoImZhaWxfY2xvc2VkIiwgImV4YW1wbGVzL2ZhaWxfY2xvc2VkLmpzb24iLCAiRkFJTF9DTE9TRUQiKSwKICAgIF0KICAgIHJlc3VsdHMgPSBbXQogICAgZm9yIG5hbWUsIHBhdGgsIGV4cGVjdGVkIGluIGNhc2VzOgogICAgICAgIHJlc3VsdCA9IHJ1bl9maWxlKHBhdGgsIG91dCAvIG5hbWUpCiAgICAgICAgcmVzdWx0cy5hcHBlbmQoeyJjYXNlIjogbmFtZSwgImV4cGVjdGVkIjogZXhwZWN0ZWQsICJhY3R1YWwiOiByZXN1bHRbImRlY2lzaW9uIl0sICJwYXNzZWQiOiByZXN1bHRbImRlY2lzaW9uIl0gPT0gZXhwZWN0ZWR9KQoKICAgIHJlcG9ydCA9IHsiZGVjaXNpb24iOiAiQUxMT1ciIGlmIGFsbChpdGVtWyJwYXNzZWQiXSBmb3IgaXRlbSBpbiByZXN1bHRzKSBlbHNlICJGQUlMX0NMT1NFRCIsICJyZXN1bHRzIjogcmVzdWx0c30KICAgIHdyaXRlX2pzb24ob3V0IC8gInNlbGZ0ZXN0X3JlcG9ydC5qc29uIiwgcmVwb3J0KQogICAgcmV0dXJuIHJlcG9ydAoKCmRlZiBtYWluKCkgLT4gTm9uZToKICAgIHBhcnNlciA9IGFyZ3BhcnNlLkFyZ3VtZW50UGFyc2VyKHByb2c9ImNvcmUtbGl0ZS1wcm9kIikKICAgIHN1YiA9IHBhcnNlci5hZGRfc3VicGFyc2VycyhkZXN0PSJjb21tYW5kIiwgcmVxdWlyZWQ9VHJ1ZSkKCiAgICBydW4gPSBzdWIuYWRkX3BhcnNlcigicnVuIikKICAgIHJ1bi5hZGRfYXJndW1lbnQoImlucHV0IikKICAgIHJ1bi5hZGRfYXJndW1lbnQoIi0tb3V0IiwgZGVmYXVsdD0ib3V0IikKCiAgICBzdCA9IHN1Yi5hZGRfcGFyc2VyKCJzZWxmdGVzdCIpCiAgICBzdC5hZGRfYXJndW1lbnQoIi0tb3V0IiwgZGVmYXVsdD0ib3V0IikKCiAgICBhcmdzID0gcGFyc2VyLnBhcnNlX2FyZ3MoKQogICAgaWYgYXJncy5jb21tYW5kID09ICJydW4iOgogICAgICAgIHJlc3VsdCA9IHJ1bl9maWxlKGFyZ3MuaW5wdXQsIGFyZ3Mub3V0KQogICAgZWxpZiBhcmdzLmNvbW1hbmQgPT0gInNlbGZ0ZXN0IjoKICAgICAgICByZXN1bHQgPSBzZWxmdGVzdChhcmdzLm91dCkKICAgIGVsc2U6CiAgICAgICAgcmFpc2UgU3lzdGVtRXhpdChmIlVuc3VwcG9ydGVkIGNvbW1hbmQ6IHthcmdzLmNvbW1hbmR9IikKCiAgICBwcmludChqc29uLmR1bXBzKHJlc3VsdCwgaW5kZW50PTIsIHNvcnRfa2V5cz1UcnVlLCBlbnN1cmVfYXNjaWk9RmFsc2UpKQoKCmlmIF9fbmFtZV9fID09ICJfX21haW5fXyI6CiAgICBtYWluKCkK",\n  "tests/test_core_lite_prod.py": "ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCgpmcm9tIGNvcmVfbGl0ZV9wcm9kLmNvcmUgaW1wb3J0IGluZ2VzdCwgcnVuX2ZpbGUsIHNlbGZ0ZXN0LCB0dmNfY2hlY2sKCgpkZWYgdGVzdF9pbmdlc3QoKSAtPiBOb25lOgogICAgZW52ZWxvcGUgPSBpbmdlc3QoewogICAgICAgICJzb3VyY2UiOiAidW5pdCIsCiAgICAgICAgInBheWxvYWQiOiB7ImFjdGlvbiI6ICJjb250aW51ZSIsICJyaXNrIjogMC4xfSwKICAgICAgICAibWV0YWRhdGEiOiB7ImF1dGhvcml0eV9yZWYiOiAiYXV0aDp0ZXN0IiwgInBvbGljeV9yZWYiOiAicG9saWN5OnRlc3QifSwKICAgIH0pCiAgICBhc3NlcnQgZW52ZWxvcGVbImRlY2lzaW9uIl0gPT0gIkFMTE9XIgogICAgYXNzZXJ0IGxlbihlbnZlbG9wZVsiaW5wdXRfaGFzaCJdKSA9PSA2NAoKCmRlZiB0ZXN0X3R2Y19ibG9ja3NfcmF3X3NlY3JldCgpIC0+IE5vbmU6CiAgICBlbnZlbG9wZSA9IGluZ2VzdCh7CiAgICAgICAgInBheWxvYWQiOiB7ImFjdGlvbiI6ICJjb250aW51ZSJ9LAogICAgICAgICJtZXRhZGF0YSI6IHsiYXV0aG9yaXR5X3JlZiI6ICJhdXRoOnRlc3QiLCAicG9saWN5X3JlZiI6ICJwb2xpY3k6dGVzdCIsICJzZWNyZXQiOiAiYmFkIn0sCiAgICB9KQogICAgYXNzZXJ0IHR2Y19jaGVjayhlbnZlbG9wZSlbImRlY2lzaW9uIl0gPT0gIkRFTlkiCgoKZGVmIHRlc3RfcnVuX2FsbG93KHRtcF9wYXRoOiBQYXRoKSAtPiBOb25lOgogICAgcmVzdWx0ID0gcnVuX2ZpbGUoImV4YW1wbGVzL2FsbG93Lmpzb24iLCB0bXBfcGF0aCkKICAgIGFzc2VydCByZXN1bHRbImRlY2lzaW9uIl0gPT0gIkFMTE9XIgogICAgYXNzZXJ0ICh0bXBfcGF0aCAvICJydW5fcmVwb3J0Lmpzb24iKS5leGlzdHMoKQogICAgYXNzZXJ0ICh0bXBfcGF0aCAvICJyZWNlaXB0Lmpzb24iKS5leGlzdHMoKQoKCmRlZiB0ZXN0X3J1bl9kZW55KHRtcF9wYXRoOiBQYXRoKSAtPiBOb25lOgogICAgcmVzdWx0ID0gcnVuX2ZpbGUoImV4YW1wbGVzL2RlbnkuanNvbiIsIHRtcF9wYXRoKQogICAgYXNzZXJ0IHJlc3VsdFsiZGVjaXNpb24iXSA9PSAiREVOWSIKCgpkZWYgdGVzdF9ydW5fc2FuZGJveCh0bXBfcGF0aDogUGF0aCkgLT4gTm9uZToKICAgIHJlc3VsdCA9IHJ1bl9maWxlKCJleGFtcGxlcy9zYW5kYm94Lmpzb24iLCB0bXBfcGF0aCkKICAgIGFzc2VydCByZXN1bHRbImRlY2lzaW9uIl0gPT0gIkFMTE9XIgoKCmRlZiB0ZXN0X3NlbGZ0ZXN0KHRtcF9wYXRoOiBQYXRoKSAtPiBOb25lOgogICAgcmVzdWx0ID0gc2VsZnRlc3QodG1wX3BhdGgpCiAgICBhc3NlcnQgcmVzdWx0WyJkZWNpc2lvbiJdID09ICJBTExPVyIKICAgIGFzc2VydCAodG1wX3BhdGggLyAic2VsZnRlc3RfcmVwb3J0Lmpzb24iKS5leGlzdHMoKQo="\n}'
+
+          for path, encoded in files.items():
+              target = Path(path)
+              target.parent.mkdir(parents=True, exist_ok=True)
+              target.write_bytes(base64.b64decode(encoded))
+
+      - name: Install generated package
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Run tests
+        run: pytest -q
+
+      - name: Run operational selftest
+        run: core-lite-prod selftest --out out
+
+      - name: Run allow smoke
+        run: core-lite-prod run examples/allow.json --out out_allow
+
+      - name: Run sandbox smoke
+        run: core-lite-prod run examples/sandbox.json --out out_sandbox
+
+      - name: Create generated file bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf dist
+          mkdir -p dist
+          zip -r dist/core-lite-prod-generated-v001.zip \
+            README.md \
+            ARCHITECTURE.md \
+            PRODUCT.md \
+            SECURITY.md \
+            BUILD_VERIFICATION.json \
+            manifest.json \
+            pyproject.toml \
+            examples \
+            src \
+            tests \
+            .github/workflows/test.yml
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          bundle = Path("dist/core-lite-prod-generated-v001.zip")
+          manifest = {
+              "name": "core-lite-prod-generated-v001.zip",
+              "sha256": hashlib.sha256(bundle.read_bytes()).hexdigest(),
+              "purpose": "Generated core-lite-prod operational substrate after tests/selftests passed.",
+              "target_repo": "GCAT-BCAT-Engine/core-lite-prod",
+              "contains": [
+                  "README.md",
+                  "ARCHITECTURE.md",
+                  "PRODUCT.md",
+                  "SECURITY.md",
+                  "BUILD_VERIFICATION.json",
+                  "manifest.json",
+                  "pyproject.toml",
+                  "examples/",
+                  "src/",
+                  "tests/",
+                  ".github/workflows/test.yml"
+              ]
+          }
+          Path("dist/core-lite-prod-generated-v001-manifest.json").write_text(
+              json.dumps(manifest, indent=2, sort_keys=True),
+              encoding="utf-8"
+          )
+          print(json.dumps(manifest, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload generated repo bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-lite-prod-generated-v001
+          path: |
+            dist/core-lite-prod-generated-v001.zip
+            dist/core-lite-prod-generated-v001-manifest.json
+
+      - name: Upload bootstrap artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-lite-prod-bootstrap-artifacts
+          path: |
+            out/selftest_report.json
+            out_allow/run_report.json
+            out_allow/receipt.json
+            out_allow/artifact_manifest.json
+            out_sandbox/run_report.json
+            out_sandbox/receipt.json
+            out_sandbox/artifact_manifest.json
+            dist/core-lite-prod-generated-v001.zip
+            dist/core-lite-prod-generated-v001-manifest.json
+
+      - name: Commit generated files
+        if: ${{ github.event.inputs.commit_changes == 'true' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Build core-lite-prod operational substrate v001" || echo "No changes to commit"
+          git push
