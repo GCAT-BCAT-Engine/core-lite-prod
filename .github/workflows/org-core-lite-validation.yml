@@ -10,8 +10,10 @@ on:
       - "docs/ORG_CORE_LITE_SELF_MANAGEMENT_STATUS.md"
       - "schemas/org-core-lite-event-record.schema.json"
       - "examples/org-core-lite-event-record.example.json"
+      - "data/org-core-lite-routing-matrix.json"
       - "tools/check_org_core_lite_boundary.py"
       - "tools/validate_org_core_lite_event_record.py"
+      - "tools/check_org_core_lite_routing_matrix.py"
       - "tools/check_org_core_lite_activation.py"
       - ".github/workflows/org-core-lite-validation.yml"
       - "README.md"
@@ -20,15 +22,12 @@ jobs:
   validate:
     name: Validate org core-lite boundary
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
       - name: Run org core-lite activation validation
         run: python tools/check_org_core_lite_activation.py
