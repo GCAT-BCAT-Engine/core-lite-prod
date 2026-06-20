@@ -1,0 +1,24 @@
+name: Master Records Receiver Handoff
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "docs/MASTER_RECORDS_RECEIVER_HANDOFF.md"
+      - "schemas/master-record-pointer-update.schema.json"
+      - "data/master-record-pointer-update.example.json"
+      - "tools/check_master_records_receiver_handoff.py"
+      - ".github/workflows/master-records-receiver-handoff.yml"
+      - "README.md"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python tools/check_master_records_receiver_handoff.py
