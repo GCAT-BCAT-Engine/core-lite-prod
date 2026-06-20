@@ -7,8 +7,8 @@ Org-level core services repo for `GCAT-BCAT-Engine`.
 ```text
 org: GCAT-BCAT-Engine
 repo: core-lite-prod
-goal: master-records retention and downstream install confirmation bridge
-state: retention_bridge_validation_ready
+goal: downstream confirmation receipt write-path and master-record pointer update flow
+state: downstream_confirmation_write_path_ready
 activation_state: self_managed_validation_ready
 ```
 
@@ -51,6 +51,15 @@ examples/downstream-install-confirmation.example.json
 tools/check_retention_bridge.py
 ```
 
+## Downstream Confirmation Write Path
+
+```text
+tools/write_downstream_confirmation.py
+receipts/downstream-install-confirmation.generated.example.json
+data/master-record-pointer-update.example.json
+tools/check_downstream_confirmation_writer.py
+```
+
 ## Self-Managed Completion
 
 ```text
@@ -64,18 +73,10 @@ Run:
 
 ```bash
 python tools/check_org_core_lite_activation.py
+python tools/check_downstream_confirmation_writer.py
 ```
 
-That runner executes:
-
-```bash
-python tools/check_org_core_lite_boundary.py
-python tools/validate_org_core_lite_event_record.py
-python tools/check_org_core_lite_routing_matrix.py
-python tools/check_org_core_lite_receipt.py
-python tools/check_org_core_lite_self_managed_completion.py
-python tools/check_retention_bridge.py
-```
+The primary runner executes through retention bridge validation. The downstream confirmation writer checker validates the generated confirmation receipt and pointer update flow.
 
 Expected output includes:
 
@@ -86,7 +87,7 @@ valid: org core-lite routing matrix
 valid: org core-lite continuation receipt
 valid: org core-lite self-managed completion
 valid: retention bridge
-valid: org core-lite activation checks
+valid: downstream confirmation writer
 ```
 
 ## Workflow
@@ -108,8 +109,10 @@ The routing matrix is routing configuration only.
 The continuation receipt is continuation evidence only.
 The retention map is pointer and custody policy only.
 The downstream confirmation example is example evidence only.
+The generated downstream confirmation receipt is example evidence only.
+The master-record pointer update example is pointer-update evidence only.
 ```
 
 ## Next Integration Candidate
 
-Create write-path behavior for generated downstream confirmation receipts and master-records pointer updates.
+Integrate the downstream confirmation writer into the primary runner and workflow after connector safety allows direct runner mutation, or continue with master-records-side receiver scaffolding.
