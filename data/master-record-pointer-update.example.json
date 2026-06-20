@@ -1,0 +1,14 @@
+{
+  "schema": "stegverse.org_core_lite.master_record_pointer_update.v1",
+  "org": "GCAT-BCAT-Engine",
+  "event_id": "gcat-event-0001",
+  "master_record_pointer": "master-records/dist/gcat-event-0001",
+  "pointer_update_path": "master-records/dist/gcat-event-0001/pointer.json",
+  "event_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "receipt_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "retention_status": "active_pending_custody",
+  "custody_state": "pending_destination_confirmation",
+  "full_bundle_location": "local-active-pending-custody",
+  "canonical_full_bundle_location": "master-records/dist/",
+  "scope": "pointer_update_example"
+}
