@@ -15,6 +15,7 @@ goal: downstream confirmation receipt write-path and master-record pointer updat
 repo_build_state: self_managed_completion_ready
 activation_state: self_managed_validation_ready
 managed_scope: GCAT-BCAT-Engine repositories
+open_hardening_issue: #1 Track workflow trigger coverage for downstream confirmation writer
 ```
 
 ## Built Validation Stack
@@ -55,6 +56,7 @@ downstream_confirmation_writer_validation: ready
 master_record_pointer_update_example: ready
 workflow_validation: primary_runner_ready
 workflow_trigger_expansion: pending_hardening
+issue_1_tracking: ready
 self_managed_completion: ready
 ```
 
@@ -69,12 +71,14 @@ continuation_receipt_scope: continuation_evidence_only
 downstream_confirmation_receipt_scope: example_evidence_only
 master_record_pointer_update_scope: pointer_update_example_only
 workflow_trigger_expansion: not_activation_evidence
+issue_1_scope: workflow_trigger_hardening_only
 ```
 
 ## Current Remainder
 
 ```text
 remaining_hardening_item: expand org-core-lite validation workflow trigger paths for downstream confirmation writer artifacts if connector safety allows direct workflow mutation.
+issue_1: Track workflow trigger coverage for downstream confirmation writer
 ```
 
 This remainder does not block self-managed validation because the workflow runs `tools/check_org_core_lite_activation.py`, and that runner now includes downstream confirmation writer validation.
@@ -89,5 +93,5 @@ next_goal_candidate: master-records-side receiver scaffolding for downstream con
 
 ```text
 thread_archive_ready: true
-reason: The repository contains boundary, status, event schema, event example, routing matrix, continuation receipt writer/checker, retention bridge, downstream confirmation writer, generated downstream confirmation example, master-record pointer update example, activation runner, workflow, README alignment, and self-managed completion record.
+reason: The repository contains boundary, status, event schema, event example, routing matrix, continuation receipt writer/checker, retention bridge, downstream confirmation writer, generated downstream confirmation example, master-record pointer update example, activation runner, workflow, README alignment, Issue #1 hardening tracker, and self-managed completion record.
 ```
