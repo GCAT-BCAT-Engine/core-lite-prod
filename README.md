@@ -7,8 +7,8 @@ Org-level core services repo for `GCAT-BCAT-Engine`.
 ```text
 org: GCAT-BCAT-Engine
 repo: core-lite-prod
-goal: org-level ingestion and continuation alignment
-state: self_managed_completion_ready
+goal: master-records retention and downstream install confirmation bridge
+state: retention_bridge_validation_ready
 activation_state: self_managed_validation_ready
 ```
 
@@ -43,6 +43,14 @@ receipts/org-core-lite-continuation-receipt.example.json
 tools/check_org_core_lite_receipt.py
 ```
 
+## Retention Bridge Validation
+
+```text
+data/master-records-retention-map.json
+examples/downstream-install-confirmation.example.json
+tools/check_retention_bridge.py
+```
+
 ## Self-Managed Completion
 
 ```text
@@ -66,17 +74,18 @@ python tools/validate_org_core_lite_event_record.py
 python tools/check_org_core_lite_routing_matrix.py
 python tools/check_org_core_lite_receipt.py
 python tools/check_org_core_lite_self_managed_completion.py
+python tools/check_retention_bridge.py
 ```
 
-Expected output:
+Expected output includes:
 
 ```text
 valid: org core-lite boundary
-valid: examples/org-core-lite-event-record.example.json
 valid: org core-lite event records
 valid: org core-lite routing matrix
 valid: org core-lite continuation receipt
 valid: org core-lite self-managed completion
+valid: retention bridge
 valid: org core-lite activation checks
 ```
 
@@ -97,9 +106,10 @@ README is documentation only.
 The event record example is example evidence only.
 The routing matrix is routing configuration only.
 The continuation receipt is continuation evidence only.
-The self-managed completion document is a status record only.
+The retention map is pointer and custody policy only.
+The downstream confirmation example is example evidence only.
 ```
 
 ## Next Integration Candidate
 
-Connect org-level core-lite event records to master-records retention and downstream repository install confirmation.
+Create write-path behavior for generated downstream confirmation receipts and master-records pointer updates.
