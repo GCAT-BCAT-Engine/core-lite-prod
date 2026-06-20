@@ -15,24 +15,27 @@ CHECKS = {
         "thread_archive_ready: true",
     ],
     "docs/ORG_CORE_LITE_INGESTION_BOUNDARY.md": [
-        "state: receipt_writer_validation_ready",
-        "Continuation Receipt Writer",
-        "activation runner validates continuation receipt",
+        "state: self_managed_completion_ready",
+        "Self-Managed Completion",
+        "activation runner validates self-managed completion",
+        "thread_archive_ready: true",
     ],
     "docs/ORG_CORE_LITE_SELF_MANAGEMENT_STATUS.md": [
-        "repo_state: receipt_writer_validation_ready",
+        "repo_state: self_managed_completion_ready",
+        "activation_state: self_managed_validation_ready",
         "receipt_writer_alignment: ready",
-        "self_managed_completion: pending",
+        "self_managed_completion: ready",
     ],
     "tools/check_org_core_lite_activation.py": [
         "tools/check_org_core_lite_boundary.py",
         "tools/validate_org_core_lite_event_record.py",
         "tools/check_org_core_lite_routing_matrix.py",
         "tools/check_org_core_lite_receipt.py",
+        "tools/check_org_core_lite_self_managed_completion.py",
     ],
     "README.md": [
-        "state: receipt_writer_validation_ready",
-        "tools/check_org_core_lite_receipt.py",
+        "state: self_managed_completion_ready",
+        "tools/check_org_core_lite_self_managed_completion.py",
     ],
 }
 
