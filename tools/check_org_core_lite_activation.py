@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 COMMANDS = [
     [sys.executable, "tools/check_org_core_lite_boundary.py"],
+    [sys.executable, "tools/validate_org_core_lite_event_record.py"],
 ]
 
 
