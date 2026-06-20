@@ -1,0 +1,15 @@
+{
+  "schema": "stegverse.org_core_lite.downstream_install_confirmation.v1",
+  "org": "GCAT-BCAT-Engine",
+  "event_id": "gcat-event-0001",
+  "origin_repository": "GCAT-BCAT-Engine/core-lite-prod",
+  "destination_repository": "GCAT-BCAT-Engine/Publisher",
+  "event_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "receipt_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "installed": false,
+  "install_state": "pending_confirmation",
+  "destination_deprecated": false,
+  "superseded_by": null,
+  "master_record_pointer": "master-records/dist/gcat-event-0001",
+  "non_claim": "This confirmation example is not a final downstream installation receipt."
+}
