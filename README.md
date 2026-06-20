@@ -7,9 +7,9 @@ Org-level core services repo for `GCAT-BCAT-Engine`.
 ```text
 org: GCAT-BCAT-Engine
 repo: core-lite-prod
-goal: downstream confirmation receipt write-path and master-record pointer update flow
-state: downstream_confirmation_write_path_ready
-activation_state: self_managed_validation_ready
+goal: receiver handoff scaffold
+state: receiver_handoff_scaffold_ready
+activation_state: pending_receiver_repository_installation
 ```
 
 ## Boundary Documents
@@ -18,54 +18,40 @@ activation_state: self_managed_validation_ready
 docs/ORG_CORE_LITE_INGESTION_BOUNDARY.md
 docs/ORG_CORE_LITE_SELF_MANAGEMENT_STATUS.md
 docs/ORG_CORE_LITE_SELF_MANAGED_COMPLETION.md
+docs/DOWNSTREAM_CONFIRMATION_WRITE_PATH.md
+docs/MASTER_RECORDS_RECEIVER_HANDOFF.md
 ```
 
-## Event Record Validation
+## Validation Groups
 
 ```text
 schemas/org-core-lite-event-record.schema.json
 examples/org-core-lite-event-record.example.json
 tools/validate_org_core_lite_event_record.py
-```
 
-## Routing Matrix Validation
-
-```text
 data/org-core-lite-routing-matrix.json
 tools/check_org_core_lite_routing_matrix.py
-```
 
-## Continuation Receipt Validation
-
-```text
 tools/write_org_core_lite_receipt.py
 receipts/org-core-lite-continuation-receipt.example.json
 tools/check_org_core_lite_receipt.py
-```
 
-## Retention Bridge Validation
-
-```text
 data/master-records-retention-map.json
 examples/downstream-install-confirmation.example.json
 tools/check_retention_bridge.py
-```
 
-## Downstream Confirmation Write Path
-
-```text
 tools/write_downstream_confirmation.py
 receipts/downstream-install-confirmation.generated.example.json
 data/master-record-pointer-update.example.json
 tools/check_downstream_confirmation_writer.py
+
+docs/MASTER_RECORDS_RECEIVER_HANDOFF.md
+schemas/master-record-pointer-update.schema.json
+tools/check_master_records_receiver_handoff.py
+github/workflows/master-records-receiver-handoff.yml
 ```
 
-## Self-Managed Completion
-
-```text
-docs/ORG_CORE_LITE_SELF_MANAGED_COMPLETION.md
-tools/check_org_core_lite_self_managed_completion.py
-```
+Actual workflow path: `.github/workflows/master-records-receiver-handoff.yml`.
 
 ## Validation
 
@@ -73,39 +59,17 @@ Run:
 
 ```bash
 python tools/check_org_core_lite_activation.py
+python tools/check_downstream_confirmation_writer.py
+python tools/check_master_records_receiver_handoff.py
 ```
-
-The primary runner now executes through downstream confirmation writer validation. The downstream confirmation writer checker validates the generated confirmation receipt and pointer update flow.
 
 Expected output includes:
 
 ```text
 valid: org core-lite boundary
-valid: org core-lite event records
-valid: org core-lite routing matrix
-valid: org core-lite continuation receipt
-valid: org core-lite self-managed completion
 valid: retention bridge
 valid: downstream confirmation writer
-valid: org core-lite activation checks
-```
-
-## Workflow
-
-Displayed workflow path:
-
-```text
-github/workflows/org-core-lite-validation.yml
-```
-
-Actual repository path: `.github/workflows/org-core-lite-validation.yml`.
-
-Current workflow state:
-
-```text
-The workflow runs the primary activation runner.
-The primary activation runner now includes downstream confirmation writer validation.
-Workflow trigger expansion for downstream writer artifacts remains the next hardening item if connector safety allows direct workflow mutation.
+valid: master records receiver handoff
 ```
 
 ## Boundary
@@ -118,9 +82,10 @@ The continuation receipt is continuation evidence only.
 The retention map is pointer and custody policy only.
 The downstream confirmation example is example evidence only.
 The generated downstream confirmation receipt is example evidence only.
-The master-record pointer update example is pointer-update evidence only.
+The pointer update example is pointer-update evidence only.
+The receiver handoff is receiver contract evidence only.
 ```
 
 ## Next Integration Candidate
 
-Harden workflow trigger coverage for downstream confirmation writer artifacts, then continue with master-records-side receiver scaffolding.
+Create the actual receiver repository/package or continue hardening workflow integration in this repo.
