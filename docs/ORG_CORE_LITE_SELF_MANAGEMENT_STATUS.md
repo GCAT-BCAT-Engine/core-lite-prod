@@ -5,8 +5,8 @@
 ```text
 org: GCAT-BCAT-Engine
 repo: core-lite-prod
-repo_state: receipt_writer_validation_ready
-activation_state: pending_self_managed_completion
+repo_state: self_managed_completion_ready
+activation_state: self_managed_validation_ready
 managed_scope: GCAT-BCAT-Engine repositories
 ```
 
@@ -15,6 +15,7 @@ managed_scope: GCAT-BCAT-Engine repositories
 ```text
 docs/ORG_CORE_LITE_INGESTION_BOUNDARY.md
 docs/ORG_CORE_LITE_SELF_MANAGEMENT_STATUS.md
+docs/ORG_CORE_LITE_SELF_MANAGED_COMPLETION.md
 schemas/org-core-lite-event-record.schema.json
 examples/org-core-lite-event-record.example.json
 data/org-core-lite-routing-matrix.json
@@ -24,6 +25,7 @@ tools/validate_org_core_lite_event_record.py
 tools/check_org_core_lite_routing_matrix.py
 tools/write_org_core_lite_receipt.py
 tools/check_org_core_lite_receipt.py
+tools/check_org_core_lite_self_managed_completion.py
 tools/check_org_core_lite_activation.py
 github/workflows/org-core-lite-validation.yml
 README.md
@@ -38,20 +40,18 @@ event_record_validation: ready
 routing_matrix_alignment: ready
 receipt_writer_alignment: ready
 workflow_alignment: ready
-self_managed_completion: pending
+self_managed_completion: ready
 ```
 
-## Non-Claims
+## Boundary Notes
 
 ```text
-This status is not an activation receipt.
-This status does not certify all GCAT-BCAT-Engine repos as ingested.
-This status does not certify downstream installation.
-This status does not replace repository-local closure receipts.
-The routing matrix is not a downstream installation receipt.
-The continuation receipt is not a downstream installation receipt or repository activation receipt.
+status_record_only: true
+production_activation: not_claimed
+downstream_installation: not_certified
+repository_local_closure_receipts: not_replaced
 ```
 
 ## Next Valid Step
 
-Create self-managed completion documentation and checker coverage so the org-level core-lite repo can continue from repository-resident artifacts without this chat.
+Connect org-level core-lite event records to master-records retention and downstream repository install confirmation.
