@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stegverse.local/schemas/master-record-pointer-update.schema.json",
+  "title": "Master Record Pointer Update",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "org",
+    "event_id",
+    "master_record_pointer",
+    "pointer_update_path",
+    "event_hash",
+    "receipt_hash",
+    "retention_status",
+    "custody_state",
+    "canonical_full_bundle_location",
+    "scope"
+  ],
+  "properties": {
+    "schema": { "const": "stegverse.org_core_lite.master_record_pointer_update.v1" },
+    "org": { "const": "GCAT-BCAT-Engine" },
+    "event_id": { "type": "string", "minLength": 8 },
+    "master_record_pointer": { "type": "string", "pattern": "^master-records/dist/.+" },
+    "pointer_update_path": { "type": "string", "pattern": "^master-records/dist/.+" },
+    "event_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "receipt_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "retention_status": { "type": "string" },
+    "custody_state": { "type": "string" },
+    "full_bundle_location": { "type": "string" },
+    "canonical_full_bundle_location": { "type": "string", "const": "master-records/dist/" },
+    "scope": { "type": "string" }
+  }
+}
