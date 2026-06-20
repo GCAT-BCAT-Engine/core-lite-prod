@@ -5,8 +5,8 @@
 ```text
 org: GCAT-BCAT-Engine
 repo: core-lite-prod
-repo_state: scaffold_ready
-activation_state: pending_validator_and_workflow_alignment
+repo_state: event_record_validation_ready
+activation_state: pending_routing_matrix_and_receipt_writer
 managed_scope: GCAT-BCAT-Engine repositories
 ```
 
@@ -15,26 +15,26 @@ managed_scope: GCAT-BCAT-Engine repositories
 ```text
 docs/ORG_CORE_LITE_INGESTION_BOUNDARY.md
 docs/ORG_CORE_LITE_SELF_MANAGEMENT_STATUS.md
-```
-
-## Required Next Files
-
-```text
+schemas/org-core-lite-event-record.schema.json
+examples/org-core-lite-event-record.example.json
 tools/check_org_core_lite_boundary.py
+tools/validate_org_core_lite_event_record.py
 tools/check_org_core_lite_activation.py
 github/workflows/org-core-lite-validation.yml
+README.md
 ```
-
-Workflow paths are displayed without the leading dot. The repository path must use `.github/workflows/`.
 
 ## Current Boundary
 
-This status records scaffold readiness only.
+This status records event-record validation readiness.
 
 ```text
 full_activation: false
-validator_alignment: pending
-workflow_alignment: pending
+validator_alignment: ready
+event_record_validation: ready
+workflow_alignment: ready
+routing_matrix_alignment: pending
+receipt_writer_alignment: pending
 self_managed_completion: false
 ```
 
@@ -44,8 +44,9 @@ self_managed_completion: false
 This status is not an activation receipt.
 This status does not certify all GCAT-BCAT-Engine repos as ingested.
 This status does not certify downstream installation.
+This status does not replace repository-local closure receipts.
 ```
 
 ## Next Valid Step
 
-Create the validation checker, activation runner, workflow, and README alignment so the repository can verify its own ingestion boundary without chat context.
+Create the routing matrix, routing decision examples, receipt writer, and validation coverage so core-lite can classify continuation events beyond schema-level event validation.
