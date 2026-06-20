@@ -73,10 +73,9 @@ Run:
 
 ```bash
 python tools/check_org_core_lite_activation.py
-python tools/check_downstream_confirmation_writer.py
 ```
 
-The primary runner executes through retention bridge validation. The downstream confirmation writer checker validates the generated confirmation receipt and pointer update flow.
+The primary runner now executes through downstream confirmation writer validation. The downstream confirmation writer checker validates the generated confirmation receipt and pointer update flow.
 
 Expected output includes:
 
@@ -88,6 +87,7 @@ valid: org core-lite continuation receipt
 valid: org core-lite self-managed completion
 valid: retention bridge
 valid: downstream confirmation writer
+valid: org core-lite activation checks
 ```
 
 ## Workflow
@@ -99,6 +99,14 @@ github/workflows/org-core-lite-validation.yml
 ```
 
 Actual repository path: `.github/workflows/org-core-lite-validation.yml`.
+
+Current workflow state:
+
+```text
+The workflow runs the primary activation runner.
+The primary activation runner now includes downstream confirmation writer validation.
+Workflow trigger expansion for downstream writer artifacts remains the next hardening item if connector safety allows direct workflow mutation.
+```
 
 ## Boundary
 
@@ -115,4 +123,4 @@ The master-record pointer update example is pointer-update evidence only.
 
 ## Next Integration Candidate
 
-Integrate the downstream confirmation writer into the primary runner and workflow after connector safety allows direct runner mutation, or continue with master-records-side receiver scaffolding.
+Harden workflow trigger coverage for downstream confirmation writer artifacts, then continue with master-records-side receiver scaffolding.
