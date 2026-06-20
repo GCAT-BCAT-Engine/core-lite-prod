@@ -8,6 +8,7 @@ on:
     paths:
       - "docs/ORG_CORE_LITE_INGESTION_BOUNDARY.md"
       - "docs/ORG_CORE_LITE_SELF_MANAGEMENT_STATUS.md"
+      - "docs/ORG_CORE_LITE_SELF_MANAGED_COMPLETION.md"
       - "schemas/org-core-lite-event-record.schema.json"
       - "examples/org-core-lite-event-record.example.json"
       - "data/org-core-lite-routing-matrix.json"
@@ -16,6 +17,7 @@ on:
       - "tools/validate_org_core_lite_event_record.py"
       - "tools/check_org_core_lite_routing_matrix.py"
       - "tools/check_org_core_lite_receipt.py"
+      - "tools/check_org_core_lite_self_managed_completion.py"
       - "tools/check_org_core_lite_activation.py"
       - ".github/workflows/org-core-lite-validation.yml"
       - "README.md"
