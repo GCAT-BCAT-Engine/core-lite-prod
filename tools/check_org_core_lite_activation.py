@@ -14,6 +14,7 @@ COMMANDS = [
     [sys.executable, "tools/validate_org_core_lite_event_record.py"],
     [sys.executable, "tools/check_org_core_lite_routing_matrix.py"],
     [sys.executable, "tools/check_org_core_lite_receipt.py"],
+    [sys.executable, "tools/check_org_core_lite_self_managed_completion.py"],
 ]
 
 
