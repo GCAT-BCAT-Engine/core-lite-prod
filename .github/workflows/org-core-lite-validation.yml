@@ -12,26 +12,25 @@ on:
       - "schemas/org-core-lite-event-record.schema.json"
       - "examples/org-core-lite-event-record.example.json"
       - "data/org-core-lite-routing-matrix.json"
+      - "data/master-records-retention-map.json"
+      - "examples/downstream-install-confirmation.example.json"
       - "receipts/org-core-lite-continuation-receipt.example.json"
       - "tools/check_org_core_lite_boundary.py"
       - "tools/validate_org_core_lite_event_record.py"
       - "tools/check_org_core_lite_routing_matrix.py"
       - "tools/check_org_core_lite_receipt.py"
       - "tools/check_org_core_lite_self_managed_completion.py"
+      - "tools/check_retention_bridge.py"
       - "tools/check_org_core_lite_activation.py"
       - ".github/workflows/org-core-lite-validation.yml"
       - "README.md"
 
 jobs:
   validate:
-    name: Validate org core-lite boundary
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Run org core-lite activation validation
-        run: python tools/check_org_core_lite_activation.py
+      - run: python tools/check_org_core_lite_activation.py
