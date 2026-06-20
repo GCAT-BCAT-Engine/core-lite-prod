@@ -16,6 +16,7 @@ COMMANDS = [
     [sys.executable, "tools/check_org_core_lite_receipt.py"],
     [sys.executable, "tools/check_org_core_lite_self_managed_completion.py"],
     [sys.executable, "tools/check_retention_bridge.py"],
+    [sys.executable, "tools/check_downstream_confirmation_writer.py"],
 ]
 
 
