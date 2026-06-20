@@ -1,0 +1,19 @@
+{
+  "schema": "stegverse.org_core_lite.event_record.v1",
+  "org": "GCAT-BCAT-Engine",
+  "event_id": "gcat-event-0001",
+  "event_type": "bundle_received",
+  "origin_repository": "GCAT-BCAT-Engine/Publisher",
+  "destination_repository": "GCAT-BCAT-Engine/core-lite-prod",
+  "event_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "bundle_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "receipt_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "state_before_hash": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+  "state_after_hash": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  "routing_decision": "retain_pending",
+  "retention_status": "active_pending_custody",
+  "installed_confirmation": null,
+  "supersession_reference": null,
+  "master_record_pointer": "master-records/dist/gcat-event-0001",
+  "non_claim": "This event record is not a downstream installation receipt."
+}
