@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the GCAT-BCAT org core-lite ingestion boundary scaffold."""
+"""Validate the GCAT-BCAT org core-lite ingestion boundary."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ CHECKS = {
         "org: GCAT-BCAT-Engine",
         "repo: core-lite-prod",
         "goal: org-level ingestion and continuation alignment",
-        "state: boundary_scaffold_ready",
+        "state: event_record_validation_ready",
         "role: org_core_lite_ingestion_engine",
         "origin_repository",
         "destination_repository",
@@ -23,14 +23,20 @@ CHECKS = {
         "routing_decision",
         "retention_status",
         "master_record_pointer_required: true",
+        "schemas/org-core-lite-event-record.schema.json",
+        "examples/org-core-lite-event-record.example.json",
+        "tools/validate_org_core_lite_event_record.py",
         "This document is not an activation receipt.",
     ],
     "docs/ORG_CORE_LITE_SELF_MANAGEMENT_STATUS.md": [
-        "repo_state: scaffold_ready",
-        "activation_state: pending_validator_and_workflow_alignment",
+        "repo_state: event_record_validation_ready",
+        "activation_state: pending_routing_matrix_and_receipt_writer",
         "tools/check_org_core_lite_boundary.py",
+        "tools/validate_org_core_lite_event_record.py",
         "tools/check_org_core_lite_activation.py",
         "github/workflows/org-core-lite-validation.yml",
+        "event_record_validation: ready",
+        "routing_matrix_alignment: pending",
         "This status is not an activation receipt.",
     ],
 }
