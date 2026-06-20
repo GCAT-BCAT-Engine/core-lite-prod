@@ -1,0 +1,40 @@
+{
+  "schema": "stegverse.org_core_lite.master_records_retention_map.v1",
+  "org": "GCAT-BCAT-Engine",
+  "master_records_org": "master-records",
+  "default_full_bundle_location": "master-records/dist/",
+  "default_pointer_policy": "event_hash_receipt_hash_master_record_pointer",
+  "retention_rules": [
+    {
+      "retention_status": "pointer_only",
+      "full_bundle_retained_here": false,
+      "requires_master_record_pointer": true,
+      "requires_receipt_hash": true
+    },
+    {
+      "retention_status": "active_pending_custody",
+      "full_bundle_retained_here": true,
+      "requires_master_record_pointer": true,
+      "requires_receipt_hash": true
+    },
+    {
+      "retention_status": "quarantine",
+      "full_bundle_retained_here": true,
+      "requires_master_record_pointer": true,
+      "requires_receipt_hash": true
+    },
+    {
+      "retention_status": "superseded_pending_retention",
+      "full_bundle_retained_here": true,
+      "requires_master_record_pointer": true,
+      "requires_receipt_hash": true
+    },
+    {
+      "retention_status": "explicit_local_distribution",
+      "full_bundle_retained_here": true,
+      "requires_master_record_pointer": true,
+      "requires_receipt_hash": true
+    }
+  ],
+  "non_claim": "This retention map records pointer and custody policy only; it is not a master-records installation receipt."
+}
