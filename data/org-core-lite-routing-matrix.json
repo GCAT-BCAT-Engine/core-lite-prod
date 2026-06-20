@@ -1,0 +1,57 @@
+{
+  "schema": "stegverse.org_core_lite.routing_matrix.v1",
+  "org": "GCAT-BCAT-Engine",
+  "default_retention_status": "active_pending_custody",
+  "routes": [
+    {
+      "event_type": "bundle_received",
+      "routing_decision": "retain_pending",
+      "retention_status": "active_pending_custody",
+      "requires_destination_confirmation": true,
+      "requires_master_record_pointer": true
+    },
+    {
+      "event_type": "bundle_validated",
+      "routing_decision": "route",
+      "retention_status": "pointer_only",
+      "requires_destination_confirmation": true,
+      "requires_master_record_pointer": true
+    },
+    {
+      "event_type": "bundle_routed",
+      "routing_decision": "route",
+      "retention_status": "pointer_only",
+      "requires_destination_confirmation": true,
+      "requires_master_record_pointer": true
+    },
+    {
+      "event_type": "install_confirmed",
+      "routing_decision": "route",
+      "retention_status": "pointer_only",
+      "requires_destination_confirmation": false,
+      "requires_master_record_pointer": true
+    },
+    {
+      "event_type": "quarantine",
+      "routing_decision": "quarantine",
+      "retention_status": "quarantine",
+      "requires_destination_confirmation": false,
+      "requires_master_record_pointer": true
+    },
+    {
+      "event_type": "superseded",
+      "routing_decision": "supersede",
+      "retention_status": "superseded_pending_retention",
+      "requires_destination_confirmation": false,
+      "requires_master_record_pointer": true
+    },
+    {
+      "event_type": "deprecated_destination",
+      "routing_decision": "deprecate_destination",
+      "retention_status": "pointer_only",
+      "requires_destination_confirmation": false,
+      "requires_master_record_pointer": true
+    }
+  ],
+  "non_claim": "This routing matrix is not a downstream installation receipt."
+}
