@@ -1,0 +1,18 @@
+{
+  "activation_state": "non_activating_continuation_receipt",
+  "destination_repository": "GCAT-BCAT-Engine/core-lite-prod",
+  "event_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "event_id": "gcat-event-0001",
+  "event_record_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "generated_utc": "2026-06-20T00:00:00+00:00",
+  "master_record_pointer": "master-records/dist/gcat-event-0001",
+  "non_claim": "This receipt is not a downstream installation receipt or repository activation receipt.",
+  "org": "GCAT-BCAT-Engine",
+  "origin_repository": "GCAT-BCAT-Engine/Publisher",
+  "requires_destination_confirmation": true,
+  "requires_master_record_pointer": true,
+  "retention_status": "active_pending_custody",
+  "routing_decision": "retain_pending",
+  "routing_matrix_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+  "schema": "stegverse.org_core_lite.continuation_receipt.v1"
+}
