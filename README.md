@@ -8,8 +8,8 @@ Org-level core services repo for `GCAT-BCAT-Engine`.
 org: GCAT-BCAT-Engine
 repo: core-lite-prod
 goal: org-level ingestion and continuation alignment
-state: routing_matrix_validation_ready
-activation_state: pending_receipt_writer_alignment
+state: receipt_writer_validation_ready
+activation_state: pending_self_managed_completion
 ```
 
 ## Boundary Documents
@@ -34,6 +34,14 @@ data/org-core-lite-routing-matrix.json
 tools/check_org_core_lite_routing_matrix.py
 ```
 
+## Continuation Receipt Validation
+
+```text
+tools/write_org_core_lite_receipt.py
+receipts/org-core-lite-continuation-receipt.example.json
+tools/check_org_core_lite_receipt.py
+```
+
 ## Validation
 
 Run:
@@ -48,6 +56,7 @@ That runner executes:
 python tools/check_org_core_lite_boundary.py
 python tools/validate_org_core_lite_event_record.py
 python tools/check_org_core_lite_routing_matrix.py
+python tools/check_org_core_lite_receipt.py
 ```
 
 Expected output:
@@ -57,6 +66,7 @@ valid: org core-lite boundary
 valid: examples/org-core-lite-event-record.example.json
 valid: org core-lite event records
 valid: org core-lite routing matrix
+valid: org core-lite continuation receipt
 valid: org core-lite activation checks
 ```
 
@@ -70,16 +80,15 @@ github/workflows/org-core-lite-validation.yml
 
 Actual repository path: `.github/workflows/org-core-lite-validation.yml`.
 
-## Non-Activation Boundary
+## Boundary
 
 ```text
-This README is not an activation receipt.
-The ingestion boundary document is not an activation receipt.
-The self-management status is not an activation receipt.
-The event record example is not a downstream installation receipt.
-The routing matrix is not a downstream installation receipt.
+README is documentation only.
+The event record example is example evidence only.
+The routing matrix is routing configuration only.
+The continuation receipt is continuation evidence only.
 ```
 
 ## Next Build Step
 
-Move from routing matrix validation to receipt-writer alignment.
+Move from receipt-writer validation to self-managed completion alignment.
