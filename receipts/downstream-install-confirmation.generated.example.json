@@ -1,0 +1,18 @@
+{
+  "destination_deprecated": false,
+  "destination_repository": "GCAT-BCAT-Engine/Publisher",
+  "event_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "event_id": "gcat-event-0001",
+  "event_record_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+  "generated_utc": "2026-06-20T00:00:00+00:00",
+  "install_state": "pending_confirmation",
+  "installed": false,
+  "master_record_pointer": "master-records/dist/gcat-event-0001",
+  "org": "GCAT-BCAT-Engine",
+  "origin_repository": "GCAT-BCAT-Engine/core-lite-prod",
+  "pointer_update_path": "master-records/dist/gcat-event-0001/pointer.json",
+  "receipt_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "schema": "stegverse.org_core_lite.downstream_install_confirmation.v1",
+  "scope": "generated_confirmation_example",
+  "superseded_by": null
+}
