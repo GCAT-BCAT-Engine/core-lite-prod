@@ -11,6 +11,10 @@ CHECKS = {
         "event_record_validation: ready",
         "routing_matrix_validation: ready",
         "continuation_receipt_validation: ready",
+        "retention_bridge_validation: ready",
+        "downstream_confirmation_writer_validation: ready",
+        "master_record_pointer_update_example: ready",
+        "workflow_trigger_expansion: pending_hardening",
         "self_managed_completion: ready",
         "thread_archive_ready: true",
     ],
@@ -32,12 +36,23 @@ CHECKS = {
         "tools/check_org_core_lite_routing_matrix.py",
         "tools/check_org_core_lite_receipt.py",
         "tools/check_org_core_lite_self_managed_completion.py",
+        "tools/check_retention_bridge.py",
+        "tools/check_downstream_confirmation_writer.py",
+    ],
+    "tools/check_downstream_confirmation_writer.py": [
+        "downstream-install-confirmation.generated.example.json",
+        "master-record-pointer-update.example.json",
+        "valid: downstream confirmation writer",
     ],
     "README.md": [
-        "state: self_managed_completion_ready",
+        "state: downstream_confirmation_write_path_ready",
         "tools/check_org_core_lite_self_managed_completion.py",
+        "tools/check_downstream_confirmation_writer.py",
+        "valid: downstream confirmation writer",
+        "Workflow trigger expansion for downstream writer artifacts remains the next hardening item",
     ],
 }
+
 
 def main() -> int:
     for rel_path, terms in CHECKS.items():
@@ -54,6 +69,7 @@ def main() -> int:
             return 1
     print("valid: org core-lite self-managed completion")
     return 0
+
 
 if __name__ == "__main__":
     raise SystemExit(main())
