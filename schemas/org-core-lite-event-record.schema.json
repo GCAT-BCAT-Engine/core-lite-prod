@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stegverse.local/schemas/org-core-lite-event-record.schema.json",
+  "title": "Org Core-Lite Event Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "org",
+    "event_id",
+    "event_type",
+    "origin_repository",
+    "destination_repository",
+    "event_hash",
+    "bundle_hash",
+    "receipt_hash",
+    "state_before_hash",
+    "state_after_hash",
+    "routing_decision",
+    "retention_status",
+    "master_record_pointer"
+  ],
+  "properties": {
+    "schema": { "const": "stegverse.org_core_lite.event_record.v1" },
+    "org": { "const": "GCAT-BCAT-Engine" },
+    "event_id": { "type": "string", "minLength": 8 },
+    "event_type": {
+      "type": "string",
+      "enum": ["bundle_received", "bundle_validated", "bundle_routed", "install_confirmed", "quarantine", "superseded", "deprecated_destination"]
+    },
+    "origin_repository": { "type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$" },
+    "destination_repository": { "type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$" },
+    "event_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "bundle_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "receipt_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "state_before_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "state_after_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "routing_decision": {
+      "type": "string",
+      "enum": ["route", "retain_pending", "quarantine", "reject", "supersede", "deprecate_destination"]
+    },
+    "retention_status": {
+      "type": "string",
+      "enum": ["pointer_only", "active_pending_custody", "quarantine", "superseded_pending_retention", "explicit_local_distribution"]
+    },
+    "installed_confirmation": { "type": ["boolean", "null"] },
+    "supersession_reference": { "type": ["string", "null"] },
+    "master_record_pointer": { "type": "string", "minLength": 12 },
+    "non_claim": { "type": "string" }
+  }
+}
