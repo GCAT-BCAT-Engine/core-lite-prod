@@ -12,8 +12,8 @@ The repo is responsible for org-level continuation, validation, and routing evid
 org: GCAT-BCAT-Engine
 repo: core-lite-prod
 goal: org-level ingestion and continuation alignment
-state: event_record_validation_ready
-activation_state: pending_routing_matrix_and_receipt_writer
+state: routing_matrix_validation_ready
+activation_state: pending_receipt_writer_alignment
 ```
 
 ## Boundary Role
@@ -56,6 +56,15 @@ tools/validate_org_core_lite_event_record.py
 
 The event record schema validates repository identity, event type, hash fields, routing decision, retention status, and master-record pointer presence.
 
+## Routing Matrix
+
+```text
+data/org-core-lite-routing-matrix.json
+tools/check_org_core_lite_routing_matrix.py
+```
+
+The routing matrix binds event types to routing decisions, retention status, destination-confirmation requirements, and master-record pointer requirements.
+
 ## Retention Boundary
 
 ```text
@@ -73,6 +82,7 @@ This document is not an activation receipt.
 This repo is not yet a full production ingestion engine.
 This repo does not certify downstream installation by itself.
 This repo does not replace Publisher/Site closure receipts.
+The routing matrix is not a downstream installation receipt.
 ```
 
 ## Current Acceptance Criteria
@@ -88,11 +98,14 @@ event record schema exists
 event record example exists
 event record validator exists
 activation runner validates event records
+routing matrix exists
+routing matrix checker exists
+activation runner validates routing matrix
 ```
 
 ## Archive Readiness
 
 ```text
 thread_archive_ready: false
-reason: Event-record validation is present, but routing matrix and receipt writer still need to be created and aligned.
+reason: Routing matrix validation is present, but receipt writer still needs to be created and aligned.
 ```
