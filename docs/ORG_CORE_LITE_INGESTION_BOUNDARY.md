@@ -12,8 +12,8 @@ The repo is responsible for org-level continuation, validation, and routing evid
 org: GCAT-BCAT-Engine
 repo: core-lite-prod
 goal: org-level ingestion and continuation alignment
-state: boundary_scaffold_ready
-activation_state: pending_validator_and_workflow_alignment
+state: event_record_validation_ready
+activation_state: pending_routing_matrix_and_receipt_writer
 ```
 
 ## Boundary Role
@@ -43,7 +43,18 @@ routing_decision
 retention_status
 installed_confirmation
 supersession_reference
+master_record_pointer
 ```
+
+## Event Record Schema
+
+```text
+schemas/org-core-lite-event-record.schema.json
+examples/org-core-lite-event-record.example.json
+tools/validate_org_core_lite_event_record.py
+```
+
+The event record schema validates repository identity, event type, hash fields, routing decision, retention status, and master-record pointer presence.
 
 ## Retention Boundary
 
@@ -64,7 +75,7 @@ This repo does not certify downstream installation by itself.
 This repo does not replace Publisher/Site closure receipts.
 ```
 
-## Initial Acceptance Criteria
+## Current Acceptance Criteria
 
 ```text
 boundary document exists
@@ -73,11 +84,15 @@ validation checker exists
 activation runner exists
 README points to this boundary
 workflow validates boundary and status
+event record schema exists
+event record example exists
+event record validator exists
+activation runner validates event records
 ```
 
 ## Archive Readiness
 
 ```text
 thread_archive_ready: false
-reason: Boundary scaffold is present, but validation runner, workflow, and self-management status must still be created and aligned.
+reason: Event-record validation is present, but routing matrix and receipt writer still need to be created and aligned.
 ```
