@@ -1,0 +1,20 @@
+{
+  "schema": "stegverse.org_core_lite.master_records_publication_ack.v1",
+  "source_repository": "GCAT-BCAT-Engine/core-lite-prod",
+  "target_repository": "master-records/telemetry",
+  "event_id": "gcat-event-0001",
+  "event_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "master_record_pointer": "master-records/dist/gcat-event-0001",
+  "published_paths": [
+    "examples/inbound-master-record-pointer-update.example.json",
+    "examples/inbound-downstream-install-confirmation.example.json",
+    "receipts/cross-repo-confirmation-receipt.example.json",
+    "data/receipt-pairing-index.json"
+  ],
+  "acknowledgement_state": "published_example_acknowledged",
+  "status_record_only": true,
+  "source_activation_claim": false,
+  "downstream_install_claim": false,
+  "full_retention_claim": false,
+  "scope": "publication_acknowledgement_example"
+}
