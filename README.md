@@ -7,8 +7,8 @@ Org-level core services repo for `GCAT-BCAT-Engine`.
 ```text
 org: GCAT-BCAT-Engine
 repo: core-lite-prod
-goal: core-lite-side publication handoff acknowledgement
-state: publication_handoff_acknowledgement_ready
+goal: mirrored bilateral closure acknowledgement
+state: bilateral_closure_acknowledgement_ready
 activation_state: receiver_publication_acknowledgement_ready
 ```
 
@@ -21,6 +21,7 @@ docs/ORG_CORE_LITE_SELF_MANAGED_COMPLETION.md
 docs/DOWNSTREAM_CONFIRMATION_WRITE_PATH.md
 docs/MASTER_RECORDS_RECEIVER_HANDOFF.md
 docs/MASTER_RECORDS_PUBLICATION_HANDOFF.md
+docs/BILATERAL_HANDOFF_CLOSURE_ACK.md
 ```
 
 ## Validation Groups
@@ -49,6 +50,10 @@ tools/check_downstream_confirmation_writer.py
 docs/MASTER_RECORDS_PUBLICATION_HANDOFF.md
 receipts/master-records-publication-ack.example.json
 tools/check_master_records_publication_handoff.py
+
+docs/BILATERAL_HANDOFF_CLOSURE_ACK.md
+receipts/bilateral-closure-ack.example.json
+tools/check_bilateral_closure_ack.py
 ```
 
 ## Validation
@@ -59,6 +64,7 @@ Run:
 python tools/check_org_core_lite_activation.py
 python tools/check_downstream_confirmation_writer.py
 python tools/check_master_records_publication_handoff.py
+python tools/check_bilateral_closure_ack.py
 ```
 
 Expected output includes:
@@ -68,6 +74,7 @@ valid: org core-lite boundary
 valid: retention bridge
 valid: downstream confirmation writer
 valid: master records publication handoff
+valid: bilateral closure acknowledgement
 ```
 
 ## Boundary
@@ -82,8 +89,9 @@ The downstream confirmation example is example evidence only.
 The generated downstream confirmation receipt is example evidence only.
 The pointer update example is pointer-update evidence only.
 The publication handoff acknowledgement is status evidence only.
+The bilateral closure acknowledgement is mirrored status evidence only.
 ```
 
 ## Next Integration Candidate
 
-Pair this source acknowledgement with the telemetry receipt pairing index and create a bilateral handoff closure record.
+Create an ecosystem-level handoff status index covering core-lite-prod and master-records/telemetry.
