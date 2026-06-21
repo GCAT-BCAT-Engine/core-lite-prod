@@ -1,0 +1,17 @@
+{
+  "schema": "stegverse.org_core_lite.bilateral_closure_ack.v1",
+  "source_repository": "GCAT-BCAT-Engine/core-lite-prod",
+  "target_repository": "master-records/telemetry",
+  "event_id": "gcat-event-0001",
+  "event_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "master_record_pointer": "master-records/dist/gcat-event-0001",
+  "source_publication_ack_path": "receipts/master-records-publication-ack.example.json",
+  "telemetry_bilateral_closure_path": "master-records/telemetry:receipts/bilateral-handoff-closure.example.json",
+  "telemetry_pairing_index_path": "master-records/telemetry:data/receipt-pairing-index.json",
+  "acknowledgement_state": "bilateral_closure_acknowledged",
+  "status_record_only": true,
+  "source_activation_claim": false,
+  "downstream_install_claim": false,
+  "full_retention_claim": false,
+  "scope": "bilateral_closure_acknowledgement_example"
+}
