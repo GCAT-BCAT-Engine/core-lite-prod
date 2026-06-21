@@ -7,9 +7,9 @@ Org-level core services repo for `GCAT-BCAT-Engine`.
 ```text
 org: GCAT-BCAT-Engine
 repo: core-lite-prod
-goal: receiver handoff scaffold
-state: receiver_handoff_scaffold_ready
-activation_state: pending_receiver_repository_installation
+goal: core-lite-side publication handoff acknowledgement
+state: publication_handoff_acknowledgement_ready
+activation_state: receiver_publication_acknowledgement_ready
 ```
 
 ## Boundary Documents
@@ -20,6 +20,7 @@ docs/ORG_CORE_LITE_SELF_MANAGEMENT_STATUS.md
 docs/ORG_CORE_LITE_SELF_MANAGED_COMPLETION.md
 docs/DOWNSTREAM_CONFIRMATION_WRITE_PATH.md
 docs/MASTER_RECORDS_RECEIVER_HANDOFF.md
+docs/MASTER_RECORDS_PUBLICATION_HANDOFF.md
 ```
 
 ## Validation Groups
@@ -45,13 +46,10 @@ receipts/downstream-install-confirmation.generated.example.json
 data/master-record-pointer-update.example.json
 tools/check_downstream_confirmation_writer.py
 
-docs/MASTER_RECORDS_RECEIVER_HANDOFF.md
-schemas/master-record-pointer-update.schema.json
-tools/check_master_records_receiver_handoff.py
-github/workflows/master-records-receiver-handoff.yml
+docs/MASTER_RECORDS_PUBLICATION_HANDOFF.md
+receipts/master-records-publication-ack.example.json
+tools/check_master_records_publication_handoff.py
 ```
-
-Actual workflow path: `.github/workflows/master-records-receiver-handoff.yml`.
 
 ## Validation
 
@@ -60,7 +58,7 @@ Run:
 ```bash
 python tools/check_org_core_lite_activation.py
 python tools/check_downstream_confirmation_writer.py
-python tools/check_master_records_receiver_handoff.py
+python tools/check_master_records_publication_handoff.py
 ```
 
 Expected output includes:
@@ -69,7 +67,7 @@ Expected output includes:
 valid: org core-lite boundary
 valid: retention bridge
 valid: downstream confirmation writer
-valid: master records receiver handoff
+valid: master records publication handoff
 ```
 
 ## Boundary
@@ -83,9 +81,9 @@ The retention map is pointer and custody policy only.
 The downstream confirmation example is example evidence only.
 The generated downstream confirmation receipt is example evidence only.
 The pointer update example is pointer-update evidence only.
-The receiver handoff is receiver contract evidence only.
+The publication handoff acknowledgement is status evidence only.
 ```
 
 ## Next Integration Candidate
 
-Create the actual receiver repository/package or continue hardening workflow integration in this repo.
+Pair this source acknowledgement with the telemetry receipt pairing index and create a bilateral handoff closure record.
