@@ -200,3 +200,62 @@ session-consolidation: 6/6
 ## Archive condition
 
 This session workstream is archive-safe. Every primary and adjacent goal is implemented, validated, integrated, superseded, or durably transferred. All known claims are released or closed, machine-owned regression paths remain active, no required propagation is outstanding, and no unique execution state remains only in chat.
+
+## Custody semantics reopening transition — 2026-08-06
+
+The preceding completed state remains historical evidence and is not overwritten.
+
+```text
+transition_id: GCAT-CUSTODY-SEMANTICS-REOPEN-001
+reopening_trigger: independent static reconciliation found undeclared record-local hash semantics and an expiring external-artifact dependency
+prior_claim_state: RELEASED / COMPLETE
+new_claim_state: CLAIMED_FOR_INTEGRATION
+repository: GCAT-BCAT-Engine/core-lite-prod
+branch: fix/custody-chain-record-envelope
+pull_request: 11
+canonical_dependency: master-records/core-lite#27
+canonical_owner: repository-native curiosity/motive admission workflow
+active_implementation_claim: migrated acknowledgement-import envelope
+active_validation_claim: exact-head hosted workflow pending
+claim_release_condition: PR-head workflow success, job and log inspection, artifact inspection, merge, and exact-main workflow success
+collision_boundary: admission semantics and runtime authority are unchanged
+```
+
+Installed reopening surfaces:
+
+```text
+records/custody-chain-semantics-reopening-001.json
+receipts/master-records-curiosity-motive-custody-ack.json
+tests/test_custody_record_envelope.py
+.github/workflows/curiosity-motive-admission.yml
+docs/CURIOSITY_MOTIVE_ADMISSION_MIRROR_HANDOFF.md
+```
+
+The migrated acknowledgement import declares `record_type`, preserves its namespaced `schema`, declares the correspondence between those fields, records fully qualified source and destination repositories, and declares its excluded self-hash field. Its current record self-hash is:
+
+```text
+ed597ecde9b7736a610f273774820d662c5bec066bdad5e3980f33bc7ed87996
+```
+
+Machine-owned validation:
+
+```text
+owner: .github/workflows/curiosity-motive-admission.yml
+trigger: pull request, push to main on owned paths, or workflow dispatch
+inputs: migrated acknowledgement import, reopening record, validator test, this handoff
+outputs: deterministic test result, exact-head execution receipt, Actions artifact
+failure behavior: fail closed
+next executable task: inspect the exact PR-head workflow run and artifact
+```
+
+Authority remains unchanged:
+
+```text
+custody_acknowledgement != repository_binding
+master_record_custody != runtime_activation
+reconstruction != occurrence
+execution_authority_granted: false
+policy_publication_authorized: false
+```
+
+Session consolidation for this reopening is `MERGED INTO: master-records/core-lite#27` and `GCAT-BCAT-Engine/core-lite-prod#11`. This repository lane is not archive-safe until the release condition above is satisfied.
