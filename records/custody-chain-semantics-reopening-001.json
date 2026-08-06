@@ -1,0 +1,33 @@
+{
+  "record_type": "custody_chain_reopening_transition",
+  "record_id": "GCAT-CMG-CUSTODY-SEMANTICS-REOPEN-001",
+  "repository": "GCAT-BCAT-Engine/core-lite-prod",
+  "branch": "fix/custody-chain-record-envelope",
+  "originating_goal": "make the Curiosity/Motive Governance custody chain independently verifiable",
+  "prior_state": {
+    "implementation_claim": "RELEASED",
+    "validation_claim": "RELEASED",
+    "integration_claim": "RELEASED",
+    "archive_state": "COMPLETE",
+    "evidence_commit": "6a9e25d70f4c6cd72939dad05133485d5ca668a2"
+  },
+  "reopening_trigger": "static reconciliation identified missing inline hash convention, record envelope, typed digest semantics, and expiry-aware evidence",
+  "claim_state": "CLAIMED_FOR_INTEGRATION",
+  "claimant": "cross-repository custody-chain integration lane",
+  "claimed_at": "2026-08-06T20:26:00Z",
+  "release_condition": "receipt migrated and rehashed; validator and workflow pass; canonical handoff appends transition; pull request merges; exact-main evidence inspected",
+  "owned_paths": [
+    "receipts/master-records-curiosity-motive-custody-ack.json",
+    "docs/CURIOSITY_MOTIVE_ADMISSION_MIRROR_HANDOFF.md",
+    "records/custody-chain-semantics-reopening-001.json"
+  ],
+  "collision_boundary": {
+    "cross_agent_policy_handoff": "EXCLUDED",
+    "runtime_activation": false,
+    "execution_authority": false,
+    "repository_binding": false,
+    "quorum": false,
+    "publication": false
+  },
+  "next_executable_action": "migrate receipts/master-records-curiosity-motive-custody-ack.json with record_type, hash_convention, source_repository, destination_repository, recomputed import_hash, and dependent reference updates"
+}
