@@ -1,0 +1,91 @@
+{
+  "authority_boundary": {
+    "evidence_admission_only": true,
+    "execution_activated": false,
+    "execution_authority_granted": false,
+    "phenomenal_status_inferred": false,
+    "policy_published": false,
+    "quorum_formed": false,
+    "reconstruction_asserts_occurrence": false,
+    "repository_binding_granted": false
+  },
+  "canonical_files": [
+    {
+      "git_blob_sha": "7fb1087bcf90ca57211e0cada09e2785693a1430",
+      "path": ".github/workflows/curiosity-motive-admission.yml"
+    },
+    {
+      "git_blob_sha": "84469bc8ab8fa09480f09153ed33a3b423124fd3",
+      "path": "data/curiosity-motive-admission-map.json"
+    },
+    {
+      "git_blob_sha": "35bba128ca50ec408528b0fcbf4cfd434d8c49e7",
+      "path": "docs/CURIOSITY_MOTIVE_ADMISSION_MIRROR_HANDOFF.md"
+    },
+    {
+      "git_blob_sha": "6c2a282699bf7ab4625fb261ef70b49a0c04e5e4",
+      "path": "examples/curiosity-motive-admission.example.json"
+    },
+    {
+      "git_blob_sha": "a9d6738826b1f00f608fbd2347dea40127481410",
+      "path": "schemas/curiosity-motive-admission.schema.json"
+    },
+    {
+      "git_blob_sha": "237e720e73fc6266c22f8fae551d86611f08df86",
+      "path": "tests/test_curiosity_motive_admission.py"
+    },
+    {
+      "git_blob_sha": "97b8bb5252b56040d0eb1b9b5e474268bbca038c",
+      "path": "tools/check_curiosity_motive_admission.py"
+    }
+  ],
+  "exact_main_validation": {
+    "artifact_digest": "sha256:6f8bf497a664d867c6eb4f9e9ec5a0ccbde324daf131d30d556dde505a8cc80b",
+    "artifact_id": 8952752163,
+    "artifact_name": "curiosity-motive-admission-validation-ff8e3b04628456c1bcc0571833a1a6f3071909ea",
+    "commit": "ff8e3b04628456c1bcc0571833a1a6f3071909ea",
+    "conclusion": "success",
+    "job": 92494415341,
+    "tests_result": "OK",
+    "tests_run": 13,
+    "workflow_run": 31062909742
+  },
+  "goal_id": "GCAT-BCAT-CURIOSITY-MOTIVE-ADMISSION-001",
+  "producer": {
+    "repository": "GCAT-BCAT-Engine/core-lite-prod",
+    "source_commit": "ff8e3b04628456c1bcc0571833a1a6f3071909ea",
+    "source_tree": "f15eac5ede934c2ba2987901fb7f284952bf64a9"
+  },
+  "pull_request_validation": {
+    "artifact_digest": "sha256:05345dbd69f8865bf2c9124b575b3163726c6f29002bc6c2e09a510d4f3b6396",
+    "artifact_id": 8952702333,
+    "artifact_name": "curiosity-motive-admission-validation-741c4178aba36746b11bedad97e6f6dfb91f33f4",
+    "conclusion": "success",
+    "head_commit": "3085c71e189ec9f1985544e8c6f3825fe4568d10",
+    "job": 92493976186,
+    "pull_request": 6,
+    "synthetic_merge_commit": "741c4178aba36746b11bedad97e6f6dfb91f33f4",
+    "tests_result": "OK",
+    "tests_run": 13,
+    "workflow_run": 31062762727
+  },
+  "receipt_id": "GCAT-CMG-03-VALIDATION-FF8E3B0-001",
+  "release_state": {
+    "acknowledgement_required": true,
+    "custody_owner": "master-records/core-lite",
+    "custody_state": "CUSTODY_CANDIDATE_ONLY",
+    "custody_task": "MR-GCAT-CMG-CUSTODY-001",
+    "status": "COMPLETE"
+  },
+  "schema": "stegverse.gcat_bcat.curiosity_motive_admission_validation_receipt.v1",
+  "stage": "GCAT-CMG-03",
+  "validated_record": {
+    "execution_activated": false,
+    "input_mutated": false,
+    "next_task": "GCAT-CMG-03",
+    "normative_decision": "DENY",
+    "record_hash": "6bfbd1af3aecd03c3b4579d0465f0962dd49f3741e786046a4189735223e3eac",
+    "record_id": "GCAT-CMG-02-SV002-CURIOSITY-001",
+    "status": "COMPLETE"
+  }
+}
