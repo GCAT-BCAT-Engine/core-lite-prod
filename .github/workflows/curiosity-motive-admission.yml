@@ -10,6 +10,7 @@ on:
       - "tests/test_curiosity_motive_admission.py"
       - "receipts/curiosity-motive-admission-validation.json"
       - "outbound/curiosity-motive-admission-manifest.json"
+      - "receipts/master-records-curiosity-motive-custody-ack.json"
       - "tools/check_curiosity_motive_admission_release.py"
       - "tests/test_curiosity_motive_admission_release.py"
       - ".github/workflows/curiosity-motive-admission.yml"
@@ -23,6 +24,7 @@ on:
       - "tests/test_curiosity_motive_admission.py"
       - "receipts/curiosity-motive-admission-validation.json"
       - "outbound/curiosity-motive-admission-manifest.json"
+      - "receipts/master-records-curiosity-motive-custody-ack.json"
       - "tools/check_curiosity_motive_admission_release.py"
       - "tests/test_curiosity_motive_admission_release.py"
       - ".github/workflows/curiosity-motive-admission.yml"
@@ -43,24 +45,55 @@ jobs:
           mkdir -p reports/current
           python tools/check_curiosity_motive_admission.py | tee reports/current/curiosity-motive-admission-validation.json
       - name: Validate release receipt and custody candidate
-        run: python tools/check_curiosity_motive_admission_release.py | tee reports/current/curiosity-motive-admission-release-validation.json
-      - name: Confirm custody remains blocked without acknowledgement
+        run: |
+          python tools/check_curiosity_motive_admission_release.py | tee reports/current/curiosity-motive-admission-release-validation.json
+      - name: Validate exact Master Records custody acknowledgement import
+        run: |
+          python tools/check_curiosity_motive_admission_release.py --require-ack | tee reports/current/curiosity-motive-admission-custody-ack-validation.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          result=json.loads(Path('reports/current/curiosity-motive-admission-custody-ack-validation.json').read_text(encoding='utf-8'))
+          assert result['status']=='COMPLETE'
+          assert result['custody_state']=='ACKNOWLEDGED'
+          assert result['normative_decision']=='DENY'
+          assert result['execution_activated'] is False
+          assert result['input_mutated'] is False
+          assert result['next_task']=='SESSION-CONSOLIDATION-001'
+          assert result['ack_import_hash']=='1d65230536d7cc7db60cc544c84d42d9d25fc3c9382b66d703476ac34b88813e'
+          assert result['acknowledgement_hash']=='0a98789be976aad5c18936fe823f9732d683f4e149051e34976eb4743678eb24'
+          PY
+      - name: Confirm missing acknowledgement remains blocked
         run: |
           set +e
-          python tools/check_curiosity_motive_admission_release.py --require-ack > reports/current/curiosity-motive-admission-custody-status.json
+          python tools/check_curiosity_motive_admission_release.py --require-ack --ack-import reports/current/nonexistent-acknowledgement.json > reports/current/curiosity-motive-admission-missing-ack-status.json
           code=$?
           set -e
           test "$code" -eq 2
-          python -c 'import json; d=json.load(open("reports/current/curiosity-motive-admission-custody-status.json")); assert d["status"] == "BLOCKED"; assert d["next_task"] == "MR-GCAT-CMG-CUSTODY-001"'
-      - name: Run focused unit tests
-        run: python -m unittest tests/test_curiosity_motive_admission.py tests/test_curiosity_motive_admission_release.py
-      - name: Upload validation and custody evidence
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          result=json.loads(Path('reports/current/curiosity-motive-admission-missing-ack-status.json').read_text(encoding='utf-8'))
+          assert result['status']=='BLOCKED'
+          assert result['custody_state']=='AWAITING_DESTINATION_ACKNOWLEDGEMENT'
+          assert result['next_task']=='MR-GCAT-CMG-CUSTODY-001'
+          PY
+      - name: Run focused admission and custody tests
+        run: |
+          python -m unittest tests/test_curiosity_motive_admission.py tests/test_curiosity_motive_admission_release.py
+      - name: Run repository test suite
+        run: python -m unittest discover -s tests -p 'test_*.py'
+      - name: Upload admission, custody, and acknowledgement evidence
         uses: actions/upload-artifact@v4
         with:
           name: curiosity-motive-admission-validation-${{ github.sha }}
           path: |
             reports/current/curiosity-motive-admission-validation.json
             reports/current/curiosity-motive-admission-release-validation.json
-            reports/current/curiosity-motive-admission-custody-status.json
+            reports/current/curiosity-motive-admission-custody-ack-validation.json
+            reports/current/curiosity-motive-admission-missing-ack-status.json
+            receipts/curiosity-motive-admission-validation.json
+            outbound/curiosity-motive-admission-manifest.json
+            receipts/master-records-curiosity-motive-custody-ack.json
           if-no-files-found: error
           retention-days: 30

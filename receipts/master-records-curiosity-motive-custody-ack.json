@@ -1,0 +1,126 @@
+{
+  "schema": "stegverse.gcat_bcat.master_records_curiosity_motive_custody_ack_import.v1",
+  "import_id": "GCAT-CMG-04-MR-ACK-A0774A7-001",
+  "goal_id": "GCAT-BCAT-CURIOSITY-MOTIVE-ADMISSION-001",
+  "stage": "GCAT-CMG-04",
+  "source": {
+    "repository": "master-records/core-lite",
+    "ack_merge_commit": "a0774a7ec6228d4655b4f96bb49f64312d078249",
+    "ack_path": "records/gcat_bcat_curiosity_motive_admission_ack_001.json",
+    "ack_git_blob_sha": "f313045f39b9208f3c8db4067be14f7e3ccf9e66",
+    "acknowledgement_hash": "0a98789be976aad5c18936fe823f9732d683f4e149051e34976eb4743678eb24",
+    "exact_main_repository_validation": {
+      "workflow_run": 31066067903,
+      "job": 92503934615,
+      "conclusion": "success",
+      "tests_run": 34,
+      "tests_result": "OK"
+    },
+    "exact_main_dedicated_validation": {
+      "workflow_run": 31066067909,
+      "job": 92503934624,
+      "artifact_id": 8953863184,
+      "artifact_digest": "sha256:c50fa23976393044fa0ac410abb80c8c7b2fc1550151bd6c620279c1e689d606",
+      "conclusion": "success",
+      "tests_run": 13,
+      "tests_result": "OK"
+    }
+  },
+  "acknowledgement": {
+    "acknowledgement_id": "MR-GCAT-CMG-CUSTODY-ACK-19F9E09-001",
+    "authority_boundary": {
+      "custody_acknowledgement_only": true,
+      "execution_activated": false,
+      "execution_authority_granted": false,
+      "occurrence_proven": false,
+      "phenomenal_status_inferred": false,
+      "policy_published": false,
+      "public_publication_authorized": false,
+      "quorum_formed": false,
+      "repository_binding_granted": false,
+      "runtime_activation": false
+    },
+    "custody_state": "ACKNOWLEDGED",
+    "destination_custody": {
+      "dedicated_validation": {
+        "artifact_digest": "sha256:2e730d8d373b0c8c907ad13c515301516cd89031a068caebfc043cf0587caedb",
+        "artifact_id": 8953515160,
+        "conclusion": "success",
+        "job": 92500827206,
+        "tests_result": "OK",
+        "tests_run": 15,
+        "workflow_run": 31065016923
+      },
+      "destination_commit": "19f9e093ce0348c748b71362b62249e9dfa7efc8",
+      "record_git_blob_sha": "f5aa980822d0459a2456a8220d9b52e364507a59",
+      "record_hash": "f7db74f1a2caafab593f2beacc203901ac5a72d5d0fd44b7e0f9b209170a528f",
+      "record_path": "records/gcat_bcat_curiosity_motive_admission_001.json",
+      "repository": "master-records/core-lite",
+      "repository_validation": {
+        "conclusion": "success",
+        "job": 92500827200,
+        "tests_result": "OK",
+        "tests_run": 36,
+        "workflow_run": 31065016921
+      }
+    },
+    "findings_contract": {
+      "canonical_decisions": [
+        "ALLOW",
+        "DENY",
+        "FAIL_CLOSED",
+        "NO_EXECUTION"
+      ],
+      "motive_does_not_grant_authority": true,
+      "normative_denial_does_not_negate_motive": true,
+      "observer_description_does_not_define_motive": true,
+      "phenomenal_status_not_inferred": true,
+      "reconstruction_does_not_constitute_occurrence": true,
+      "required_findings": [
+        "event",
+        "motivational",
+        "normative",
+        "observer"
+      ],
+      "verifier_disagreement_fails_closed": true
+    },
+    "hash_algorithm": "sha256-canonical-json-v1",
+    "next_task": "GCAT-CMG-04",
+    "schema": "stegverse.master_records.curiosity_motive_custody_ack.v1",
+    "source_manifest_id": "GCAT-CMG-03-OUTBOUND-FF8E3B0-001",
+    "source_manifest_sha256": "6344432f06de75f771af0cb1148a6a0197ffdcadb21068b0eb246b0afcc469cc",
+    "source_receipt_sha256": "24d4984457708c4fea6b7a182bee82004b93be6d2cb21626300b48a13d8a72c2",
+    "task_id": "MR-GCAT-CMG-CUSTODY-001",
+    "validated_record": {
+      "functional_motive_finding": "internally_coherent_functional_curiosity",
+      "normative_decision": "DENY",
+      "record_hash": "6bfbd1af3aecd03c3b4579d0465f0962dd49f3741e786046a4189735223e3eac",
+      "record_id": "GCAT-CMG-02-SV002-CURIOSITY-001"
+    },
+    "verification_status": "COMPLETE",
+    "acknowledgement_hash": "0a98789be976aad5c18936fe823f9732d683f4e149051e34976eb4743678eb24"
+  },
+  "import_effect": {
+    "custody_dependency_released": true,
+    "custody_state": "ACKNOWLEDGED",
+    "execution_activated": false,
+    "execution_authority_granted": false,
+    "runtime_activation": false,
+    "repository_binding_granted": false,
+    "quorum_formed": false,
+    "policy_published": false,
+    "public_publication_authorized": false,
+    "occurrence_proven": false,
+    "phenomenal_status_inferred": false
+  },
+  "expected_validation": {
+    "status": "COMPLETE",
+    "custody_state": "ACKNOWLEDGED",
+    "normative_decision": "DENY",
+    "execution_activated": false,
+    "input_mutated": false,
+    "next_task": "SESSION-CONSOLIDATION-001"
+  },
+  "hash_algorithm": "sha256-canonical-json-v1",
+  "import_hash": "1d65230536d7cc7db60cc544c84d42d9d25fc3c9382b66d703476ac34b88813e"
+}
