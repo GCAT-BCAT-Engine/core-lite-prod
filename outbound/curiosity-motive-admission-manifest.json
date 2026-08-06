@@ -1,0 +1,96 @@
+{
+  "authority_boundary": {
+    "custody_candidate_only": true,
+    "execution_activated": false,
+    "execution_authority_granted": false,
+    "policy_published": false,
+    "public_publication_authorized": false,
+    "quorum_formed": false,
+    "repository_binding_granted": false
+  },
+  "canonical_files": [
+    {
+      "git_blob_sha": "7fb1087bcf90ca57211e0cada09e2785693a1430",
+      "path": ".github/workflows/curiosity-motive-admission.yml"
+    },
+    {
+      "git_blob_sha": "84469bc8ab8fa09480f09153ed33a3b423124fd3",
+      "path": "data/curiosity-motive-admission-map.json"
+    },
+    {
+      "git_blob_sha": "35bba128ca50ec408528b0fcbf4cfd434d8c49e7",
+      "path": "docs/CURIOSITY_MOTIVE_ADMISSION_MIRROR_HANDOFF.md"
+    },
+    {
+      "git_blob_sha": "6c2a282699bf7ab4625fb261ef70b49a0c04e5e4",
+      "path": "examples/curiosity-motive-admission.example.json"
+    },
+    {
+      "git_blob_sha": "a9d6738826b1f00f608fbd2347dea40127481410",
+      "path": "schemas/curiosity-motive-admission.schema.json"
+    },
+    {
+      "git_blob_sha": "237e720e73fc6266c22f8fae551d86611f08df86",
+      "path": "tests/test_curiosity_motive_admission.py"
+    },
+    {
+      "git_blob_sha": "97b8bb5252b56040d0eb1b9b5e474268bbca038c",
+      "path": "tools/check_curiosity_motive_admission.py"
+    }
+  ],
+  "custody_request": {
+    "destination_repository": "master-records/core-lite",
+    "release_condition": "destination acknowledgement verifies this exact manifest and receipt and returns immutable custody evidence",
+    "requested_action": "independently_verify_and_retain",
+    "required_acknowledgement_fields": [
+      "destination_commit",
+      "record_path",
+      "record_git_blob_sha",
+      "manifest_sha256",
+      "receipt_sha256",
+      "verification_run",
+      "verification_status"
+    ],
+    "task_id": "MR-GCAT-CMG-CUSTODY-001"
+  },
+  "goal_id": "GCAT-BCAT-CURIOSITY-MOTIVE-ADMISSION-001",
+  "manifest_id": "GCAT-CMG-03-OUTBOUND-FF8E3B0-001",
+  "next_task": "MR-GCAT-CMG-CUSTODY-001",
+  "schema": "stegverse.gcat_bcat.curiosity_motive_admission_outbound_manifest.v1",
+  "source": {
+    "admission_map": "data/curiosity-motive-admission-map.json",
+    "commit": "ff8e3b04628456c1bcc0571833a1a6f3071909ea",
+    "handoff": "docs/CURIOSITY_MOTIVE_ADMISSION_MIRROR_HANDOFF.md",
+    "repository": "GCAT-BCAT-Engine/core-lite-prod",
+    "tree": "f15eac5ede934c2ba2987901fb7f284952bf64a9",
+    "validation_receipt": "receipts/curiosity-motive-admission-validation.json",
+    "validation_receipt_sha256": "24d4984457708c4fea6b7a182bee82004b93be6d2cb21626300b48a13d8a72c2"
+  },
+  "source_chain": {
+    "canonical_formulation": {
+      "commit": "42231a3862c2fe9b5898e6f75d72cff0b44e7396",
+      "module_git_blob_sha": "0a333344492880044680de6a9325ba16112bbacd",
+      "repository": "StegVerse-Labs/StegCore"
+    },
+    "durable_custody": {
+      "anchor_record_hash": "76a865b3efe8eb7496bdd36a78e5b8d3024ddcda4a009462784ed81308db97af",
+      "anchor_record_id": "MR-STEGCORE-CURIOSITY-MOTIVE-GOV-42231A3-001",
+      "repository": "master-records/core-lite"
+    },
+    "runtime_intake": {
+      "candidate_hash": "b34743d186307080a4cc371d3780544f3038c39ebbb7d146bd974461e8cf8ef1",
+      "merge_commit": "48500639bb29bd7c86437df9086a773df1e46543",
+      "receipt_hash": "6dd6039d558b07e1d3a35ab6ce65ea015353e9df46b7c8dc84edfdd7ad80908d",
+      "replay_root": "bbd79be33e090e188484628e341f28b0bebcda260a509bbdc47681c9ee204d89",
+      "repository": "StegVerse-002/core-lite"
+    }
+  },
+  "stage": "GCAT-CMG-03",
+  "status": "READY_FOR_INDEPENDENT_CUSTODY_VERIFICATION",
+  "validated_record": {
+    "normative_decision": "DENY",
+    "record_hash": "6bfbd1af3aecd03c3b4579d0465f0962dd49f3741e786046a4189735223e3eac",
+    "record_id": "GCAT-CMG-02-SV002-CURIOSITY-001",
+    "validation_status": "COMPLETE"
+  }
+}
