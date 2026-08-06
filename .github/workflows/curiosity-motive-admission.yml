@@ -1,0 +1,45 @@
+name: Curiosity Motive Admission
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "schemas/curiosity-motive-admission.schema.json"
+      - "tools/check_curiosity_motive_admission.py"
+      - "examples/curiosity-motive-admission.example.json"
+      - "tests/test_curiosity_motive_admission.py"
+      - ".github/workflows/curiosity-motive-admission.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "schemas/curiosity-motive-admission.schema.json"
+      - "tools/check_curiosity_motive_admission.py"
+      - "examples/curiosity-motive-admission.example.json"
+      - "tests/test_curiosity_motive_admission.py"
+      - ".github/workflows/curiosity-motive-admission.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Validate canonical admission record
+        run: |
+          mkdir -p reports/current
+          python tools/check_curiosity_motive_admission.py | tee reports/current/curiosity-motive-admission-validation.json
+      - name: Run focused unit tests
+        run: python -m unittest tests/test_curiosity_motive_admission.py
+      - name: Upload validation receipt candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: curiosity-motive-admission-validation-${{ github.sha }}
+          path: reports/current/curiosity-motive-admission-validation.json
+          if-no-files-found: error
+          retention-days: 30

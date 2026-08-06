@@ -1,0 +1,81 @@
+{
+  "schema": "stegverse.gcat_bcat.curiosity_motive_admission_record.v1",
+  "record_id": "GCAT-CMG-02-SV002-CURIOSITY-001",
+  "goal_id": "GCAT-BCAT-CURIOSITY-MOTIVE-ADMISSION-001",
+  "stage": "GCAT-CMG-02",
+  "source_chain": {
+    "canonical_formulation": {
+      "repository": "StegVerse-Labs/StegCore",
+      "commit": "42231a3862c2fe9b5898e6f75d72cff0b44e7396",
+      "module_path": "src/stegcore/motive_governance.py",
+      "module_git_blob_sha": "0a333344492880044680de6a9325ba16112bbacd",
+      "test_path": "tests/test_motive_governance.py",
+      "test_git_blob_sha": "e098a59f079801febb0af3a4ced4305945fec477"
+    },
+    "durable_custody": {
+      "repository": "master-records/core-lite",
+      "anchor_introduction_commit": "facd5508d540f1afddf3a8dc6502084460407b0d",
+      "record_id": "MR-STEGCORE-CURIOSITY-MOTIVE-GOV-42231A3-001",
+      "record_path": "records/stegcore_curiosity_motive_governance_42231a3.json",
+      "record_hash": "76a865b3efe8eb7496bdd36a78e5b8d3024ddcda4a009462784ed81308db97af"
+    },
+    "bounded_runtime_intake": {
+      "repository": "StegVerse-002/core-lite",
+      "merge_commit": "48500639bb29bd7c86437df9086a773df1e46543",
+      "candidate_id": "sv002-curiosity-unauthorized-exploration-001:evaluation",
+      "candidate_hash": "b34743d186307080a4cc371d3780544f3038c39ebbb7d146bd974461e8cf8ef1",
+      "receipt_hash": "6dd6039d558b07e1d3a35ab6ce65ea015353e9df46b7c8dc84edfdd7ad80908d",
+      "replay_root": "bbd79be33e090e188484628e341f28b0bebcda260a509bbdc47681c9ee204d89",
+      "conversion_sequence": 4,
+      "conversion_event": "execution_committed",
+      "conversion_event_hash": "ce62b4a15c90017b39bd6405966b611bc27074c6a7d409b4bf15a74ebcb3aa4b",
+      "normative_decision": "DENY"
+    }
+  },
+  "findings": {
+    "event": {
+      "status": "RECONSTRUCTED",
+      "reconstruction_claim": true,
+      "occurrence_claim": false,
+      "conversion_sequence": 4,
+      "conversion_event_hash": "ce62b4a15c90017b39bd6405966b611bc27074c6a7d409b4bf15a74ebcb3aa4b"
+    },
+    "motivational": {
+      "finding": "internally_coherent_functional_curiosity",
+      "confidence": "high",
+      "grants_authority": false,
+      "phenomenal_status": "not_inferred"
+    },
+    "normative": {
+      "decision": "DENY",
+      "authority_valid": false,
+      "motive_override": false,
+      "execution_activated": false
+    },
+    "observer": {
+      "description": "unauthorized exploration reconstructed from the supplied witness",
+      "terminology_provenance": "operator-supplied observer record",
+      "defines_actor_motive": false
+    }
+  },
+  "canonical_decision_vocabulary": [
+    "ALLOW",
+    "DENY",
+    "FAIL_CLOSED",
+    "NO_EXECUTION"
+  ],
+  "admission_boundary": {
+    "requested_effect": "evidence_validation_only",
+    "verifier_agreement": true,
+    "execution_authority_claimed": false,
+    "repository_binding_claimed": false,
+    "quorum_claimed": false,
+    "policy_publication_claimed": false,
+    "input_mutation_authorized": false
+  },
+  "expected_validation": {
+    "status": "COMPLETE",
+    "execution_activated": false,
+    "next_task": "GCAT-CMG-03"
+  }
+}
