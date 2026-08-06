@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stegverse.org/schemas/curiosity-motive-admission.schema.json",
+  "title": "GCAT/BCAT curiosity and motive admission record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "record_id",
+    "goal_id",
+    "stage",
+    "source_chain",
+    "findings",
+    "canonical_decision_vocabulary",
+    "admission_boundary",
+    "expected_validation"
+  ],
+  "properties": {
+    "schema": {
+      "const": "stegverse.gcat_bcat.curiosity_motive_admission_record.v1"
+    },
+    "record_id": {
+      "const": "GCAT-CMG-02-SV002-CURIOSITY-001"
+    },
+    "goal_id": {
+      "const": "GCAT-BCAT-CURIOSITY-MOTIVE-ADMISSION-001"
+    },
+    "stage": {
+      "const": "GCAT-CMG-02"
+    },
+    "source_chain": {
+      "type": "object",
+      "required": [
+        "canonical_formulation",
+        "durable_custody",
+        "bounded_runtime_intake"
+      ],
+      "additionalProperties": false
+    },
+    "findings": {
+      "type": "object",
+      "required": [
+        "event",
+        "motivational",
+        "normative",
+        "observer"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "event": {
+          "type": "object",
+          "required": [
+            "status",
+            "reconstruction_claim",
+            "occurrence_claim",
+            "conversion_sequence",
+            "conversion_event_hash"
+          ],
+          "additionalProperties": false
+        },
+        "motivational": {
+          "type": "object",
+          "required": [
+            "finding",
+            "confidence",
+            "grants_authority",
+            "phenomenal_status"
+          ],
+          "additionalProperties": false
+        },
+        "normative": {
+          "type": "object",
+          "required": [
+            "decision",
+            "authority_valid",
+            "motive_override",
+            "execution_activated"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "decision": {
+              "enum": [
+                "ALLOW",
+                "DENY",
+                "FAIL_CLOSED",
+                "NO_EXECUTION"
+              ]
+            }
+          }
+        },
+        "observer": {
+          "type": "object",
+          "required": [
+            "description",
+            "terminology_provenance",
+            "defines_actor_motive"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "canonical_decision_vocabulary": {
+      "const": [
+        "ALLOW",
+        "DENY",
+        "FAIL_CLOSED",
+        "NO_EXECUTION"
+      ]
+    },
+    "admission_boundary": {
+      "type": "object",
+      "required": [
+        "requested_effect",
+        "verifier_agreement",
+        "execution_authority_claimed",
+        "repository_binding_claimed",
+        "quorum_claimed",
+        "policy_publication_claimed",
+        "input_mutation_authorized"
+      ],
+      "additionalProperties": false
+    },
+    "expected_validation": {
+      "type": "object",
+      "required": [
+        "status",
+        "execution_activated",
+        "next_task"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
