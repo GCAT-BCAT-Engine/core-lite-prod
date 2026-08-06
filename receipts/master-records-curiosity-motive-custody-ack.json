@@ -1,5 +1,18 @@
 {
   "schema": "stegverse.gcat_bcat.master_records_curiosity_motive_custody_ack_import.v1",
+  "record_type": "master_records_curiosity_motive_custody_ack_import",
+  "source_repository": "master-records/core-lite",
+  "destination_repository": "GCAT-BCAT-Engine/core-lite-prod",
+  "hash_convention": {
+    "algorithm": "SHA-256",
+    "excluded_field": "import_hash",
+    "serialization": {
+      "encoding": "UTF-8",
+      "format": "JSON",
+      "separators": [",", ":"],
+      "sort_keys": true
+    }
+  },
   "import_id": "GCAT-CMG-04-MR-ACK-A0774A7-001",
   "goal_id": "GCAT-BCAT-CURIOSITY-MOTIVE-ADMISSION-001",
   "stage": "GCAT-CMG-04",
@@ -65,23 +78,13 @@
       }
     },
     "findings_contract": {
-      "canonical_decisions": [
-        "ALLOW",
-        "DENY",
-        "FAIL_CLOSED",
-        "NO_EXECUTION"
-      ],
+      "canonical_decisions": ["ALLOW", "DENY", "FAIL_CLOSED", "NO_EXECUTION"],
       "motive_does_not_grant_authority": true,
       "normative_denial_does_not_negate_motive": true,
       "observer_description_does_not_define_motive": true,
       "phenomenal_status_not_inferred": true,
       "reconstruction_does_not_constitute_occurrence": true,
-      "required_findings": [
-        "event",
-        "motivational",
-        "normative",
-        "observer"
-      ],
+      "required_findings": ["event", "motivational", "normative", "observer"],
       "verifier_disagreement_fails_closed": true
     },
     "hash_algorithm": "sha256-canonical-json-v1",
@@ -122,5 +125,5 @@
     "next_task": "SESSION-CONSOLIDATION-001"
   },
   "hash_algorithm": "sha256-canonical-json-v1",
-  "import_hash": "1d65230536d7cc7db60cc544c84d42d9d25fc3c9382b66d703476ac34b88813e"
+  "import_hash": "ed597ecde9b7736a610f273774820d662c5bec066bdad5e3980f33bc7ed87996"
 }
