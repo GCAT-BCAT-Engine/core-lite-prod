@@ -8,6 +8,10 @@ on:
       - "tools/check_curiosity_motive_admission.py"
       - "examples/curiosity-motive-admission.example.json"
       - "tests/test_curiosity_motive_admission.py"
+      - "receipts/curiosity-motive-admission-validation.json"
+      - "outbound/curiosity-motive-admission-manifest.json"
+      - "tools/check_curiosity_motive_admission_release.py"
+      - "tests/test_curiosity_motive_admission_release.py"
       - ".github/workflows/curiosity-motive-admission.yml"
   push:
     branches:
@@ -17,6 +21,10 @@ on:
       - "tools/check_curiosity_motive_admission.py"
       - "examples/curiosity-motive-admission.example.json"
       - "tests/test_curiosity_motive_admission.py"
+      - "receipts/curiosity-motive-admission-validation.json"
+      - "outbound/curiosity-motive-admission-manifest.json"
+      - "tools/check_curiosity_motive_admission_release.py"
+      - "tests/test_curiosity_motive_admission_release.py"
       - ".github/workflows/curiosity-motive-admission.yml"
 
 permissions:
@@ -34,12 +42,25 @@ jobs:
         run: |
           mkdir -p reports/current
           python tools/check_curiosity_motive_admission.py | tee reports/current/curiosity-motive-admission-validation.json
+      - name: Validate release receipt and custody candidate
+        run: python tools/check_curiosity_motive_admission_release.py | tee reports/current/curiosity-motive-admission-release-validation.json
+      - name: Confirm custody remains blocked without acknowledgement
+        run: |
+          set +e
+          python tools/check_curiosity_motive_admission_release.py --require-ack > reports/current/curiosity-motive-admission-custody-status.json
+          code=$?
+          set -e
+          test "$code" -eq 2
+          python -c 'import json; d=json.load(open("reports/current/curiosity-motive-admission-custody-status.json")); assert d["status"] == "BLOCKED"; assert d["next_task"] == "MR-GCAT-CMG-CUSTODY-001"'
       - name: Run focused unit tests
-        run: python -m unittest tests/test_curiosity_motive_admission.py
-      - name: Upload validation receipt candidate
+        run: python -m unittest tests/test_curiosity_motive_admission.py tests/test_curiosity_motive_admission_release.py
+      - name: Upload validation and custody evidence
         uses: actions/upload-artifact@v4
         with:
           name: curiosity-motive-admission-validation-${{ github.sha }}
-          path: reports/current/curiosity-motive-admission-validation.json
+          path: |
+            reports/current/curiosity-motive-admission-validation.json
+            reports/current/curiosity-motive-admission-release-validation.json
+            reports/current/curiosity-motive-admission-custody-status.json
           if-no-files-found: error
           retention-days: 30
