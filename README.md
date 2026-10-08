@@ -84,7 +84,7 @@ README is documentation only.
 The event record example is example evidence only.
 The routing matrix is routing configuration only.
 The continuation receipt is continuation evidence only.
-The retention map is pointer and custody policy only.
+The retention map is pointer and organization record policy only.
 The downstream confirmation example is example evidence only.
 The generated downstream confirmation receipt is example evidence only.
 The pointer update example is pointer-update evidence only.
