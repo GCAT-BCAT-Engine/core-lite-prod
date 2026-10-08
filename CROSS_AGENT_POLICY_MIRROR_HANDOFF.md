@@ -20,7 +20,7 @@ The current bilateral-closure acknowledgement goal remains independent and autho
 
 - `docs/BILATERAL_HANDOFF_CLOSURE_ACK.md`
 - `receipts/bilateral-closure-ack.example.json`
-- current master-records publication and closure tasks.
+- current publication-acknowledgement and bilateral-handoff tasks shared with `master-records/telemetry`.
 
 ## Authoritative source contracts
 
@@ -88,7 +88,7 @@ The repository-native policy workflow owns validation after installation. It mus
 
 - source policy owner: `GCAT-BCAT-Engine/core-lite-prod`;
 - consumers: `StegVerse-Labs/StegAgents`, `StegVerse-Labs/StegEntity`, `StegVerse-Labs/TVC`;
-- durable custody candidate after validation: `master-records`;
+- organization record candidate after validation: `master-records` (organization records/reconstruction only);
 - publication is not authorized until consumer integration and governed activation are verified;
 - no Site, Publisher, admissibility-wiki, or stegguardian-wiki propagation is currently claimed.
 

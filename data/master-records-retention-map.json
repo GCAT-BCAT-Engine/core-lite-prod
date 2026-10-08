@@ -36,5 +36,5 @@
       "requires_receipt_hash": true
     }
   ],
-  "non_claim": "This retention map records pointer and custody policy only; it is not a master-records installation receipt."
+  "non_claim": "This retention map records pointer and organization record policy only; it is not a master-records installation receipt."
 }
