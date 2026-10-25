@@ -1,0 +1,138 @@
+{
+ "schema": "stegverse.task-catalog/v1",
+ "repository": "GCAT-BCAT-Engine/core-lite-prod",
+ "goal_id": "G17-WORKFLOW-SURFACE-MINIMIZATION",
+ "authority": "Rigel 2026-10-24 retroactive G17 enforcement (StegVerse-org/.github#166); pattern StegVerse-Labs/StegDB#60 (eab2e773)",
+ "dispatcher": ".github/workflows/validation-dispatcher.yml",
+ "runner": "tools/tasks/run_catalog.py",
+ "runner_source": "StegVerse-Labs/StegDB tools/tasks/run_catalog.py @ eab2e773271f3e63466a710f1b4555f677882848 (sha256 f741f30557888fd8e4852a52adfc65736a08898d49ade7519f6bcc2672921e9b), copied unmodified",
+ "rule": "Every check a folded workflow job ran is one group here; its step bodies are the original run blocks byte for byte, pinned by sha256, except the repairs listed. A new check is a new group (or a step in one), never a new workflow file.",
+ "path_filters": "Dropped: every group runs on every pull_request and push to main (a superset of the original path-filtered runs). workflow_dispatch/schedule triggers are not carried (no manual dispatch, no cron).",
+ "repairs": [],
+ "folded_from_commit": "98216f7c3affd48ec7d03a7e789094d9b49070b3",
+ "groups": [
+  {
+   "id": "curiosity-motive-admission.validate",
+   "source": {
+    "workflow": ".github/workflows/curiosity-motive-admission.yml",
+    "workflow_name": "Curiosity Motive Admission",
+    "job": "validate",
+    "job_name": null,
+    "commit": "98216f7",
+    "triggers_before": [
+     "workflow_dispatch",
+     "pull_request",
+     "push"
+    ],
+    "permissions_before": {
+     "contents": "read"
+    }
+   },
+   "events": [
+    "pull_request",
+    "push"
+   ],
+   "env": {},
+   "steps": [
+    {
+     "name": "Validate canonical admission record",
+     "run_file": "tools/tasks/steps/curiosity-motive-admission.validate/01-validate-canonical-admission-record.sh",
+     "run_sha256": "8ce1b34d89fc29ef4b9d6ddc92290038c53acec7f0bb20b360c41de4653b1d9a"
+    },
+    {
+     "name": "Validate migrated release receipt and custody acknowledgement",
+     "run_file": "tools/tasks/steps/curiosity-motive-admission.validate/02-validate-migrated-release-receipt-and-custody-acknowledgemen.sh",
+     "run_sha256": "0857d5707427b04b50e5a85193dff050204426ae699572aa56c77999fbacbfc6"
+    },
+    {
+     "name": "Confirm missing acknowledgement remains blocked",
+     "run_file": "tools/tasks/steps/curiosity-motive-admission.validate/03-confirm-missing-acknowledgement-remains-blocked.sh",
+     "run_sha256": "6615abbbe54f40f16ccba231eb52f0e6e3aa914f6b6051d65374a2e134c85623"
+    },
+    {
+     "name": "Validate migrated custody record envelope",
+     "run_file": "tools/tasks/steps/curiosity-motive-admission.validate/04-validate-migrated-custody-record-envelope.sh",
+     "run_sha256": "e05d33e5dd0854e5f77f82d13fbb9797c24646ddb8735c6fb755449f53246f7f"
+    },
+    {
+     "name": "Emit exact-head execution receipt",
+     "run_file": "tools/tasks/steps/curiosity-motive-admission.validate/05-emit-exact-head-execution-receipt.sh",
+     "run_sha256": "df76a470eb02e572c9664f203e78dfe608b78cb6392f56ef67a1f933db6d6e9a"
+    }
+   ],
+   "artifacts": [
+    {
+     "name": "curiosity-motive-custody-envelope-${{ github.sha }}",
+     "path": "reports/current/curiosity-motive-admission-validation.json\nreports/current/curiosity-motive-admission-release-validation.json\nreports/current/curiosity-motive-admission-custody-ack-validation.json\nreports/current/curiosity-motive-admission-missing-ack-status.json\nreports/current/custody-record-envelope-execution.json\nreceipts/master-records-curiosity-motive-custody-ack.json\nrecords/custody-chain-semantics-reopening-001.json\ndocs/CURIOSITY_MOTIVE_ADMISSION_MIRROR_HANDOFF.md\n",
+     "if_no_files_found": "error",
+     "if": "success()"
+    }
+   ],
+   "runner": {
+    "fetch_depth": "1",
+    "persist_credentials": "true",
+    "timeout_minutes": 30,
+    "python_version": "3.11",
+    "artifact_name": "curiosity-motive-custody-envelope",
+    "artifact_if_no_files_found": "error"
+   }
+  },
+  {
+   "id": "master-records-receiver-handoff.validate",
+   "source": {
+    "workflow": ".github/workflows/master-records-receiver-handoff.yml",
+    "workflow_name": "Master Records Receiver Handoff",
+    "job": "validate",
+    "job_name": null,
+    "commit": "98216f7",
+    "triggers_before": [
+     "workflow_dispatch",
+     "push"
+    ],
+    "permissions_before": null
+   },
+   "events": [
+    "pull_request",
+    "push"
+   ],
+   "env": {},
+   "steps": [
+    {
+     "name": "step 1",
+     "run_file": "tools/tasks/steps/master-records-receiver-handoff.validate/01-step-1.sh",
+     "run_sha256": "6857fe9bf4454bf96490c7c6a8f901ac8a496cb410e9d7604a6d9889c9fb1828"
+    }
+   ],
+   "artifacts": [],
+   "runner": {
+    "fetch_depth": "1",
+    "persist_credentials": "true",
+    "timeout_minutes": 30,
+    "python_version": "3.11"
+   }
+  },
+  {
+   "id": "workflow-surface-registry.validate",
+   "catalog_addition": "G17 registry gate (no folded source workflow)",
+   "events": [
+    "pull_request",
+    "push"
+   ],
+   "env": {},
+   "steps": [
+    {
+     "name": "Workflow files equal the registered surfaces; catalog verifies ALLOW",
+     "run_file": "tools/tasks/steps/workflow-surface-registry.validate/01-registry.sh",
+     "run_sha256": "811824e88664923006be2eeb35632d710f5504145967f61632ad9e8fbdcb35ca"
+    }
+   ],
+   "artifacts": [],
+   "runner": {
+    "fetch_depth": "1",
+    "persist_credentials": "false",
+    "timeout_minutes": 10,
+    "python_version": "3.11"
+   }
+  }
+ ]
+}
