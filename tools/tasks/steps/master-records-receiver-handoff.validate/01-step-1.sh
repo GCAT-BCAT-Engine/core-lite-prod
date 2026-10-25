@@ -1,0 +1,1 @@
+python tools/check_master_records_receiver_handoff.py
