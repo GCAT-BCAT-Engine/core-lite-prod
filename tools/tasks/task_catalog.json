@@ -5,9 +5,9 @@
  "authority": "Rigel 2026-10-24 retroactive G17 enforcement (StegVerse-org/.github#166); pattern StegVerse-Labs/StegDB#60 (eab2e773)",
  "dispatcher": ".github/workflows/validation-dispatcher.yml",
  "runner": "tools/tasks/run_catalog.py",
- "runner_source": "StegVerse-Labs/StegDB tools/tasks/run_catalog.py @ eab2e773271f3e63466a710f1b4555f677882848 (sha256 f741f30557888fd8e4852a52adfc65736a08898d49ade7519f6bcc2672921e9b), copied unmodified",
+ "runner_source": "StegVerse-Labs/StegDB tools/tasks/run_catalog.py @ eab2e773271f3e63466a710f1b4555f677882848 (sha256 f741f30557888fd8e4852a52adfc65736a08898d49ade7519f6bcc2672921e9b), copied unmodified; then patched with the original-path-filter selection (matrix marks cells selected; StegVerse-Labs/Site#1647 pattern), so it no longer equals that sha256",
  "rule": "Every check a folded workflow job ran is one group here; its step bodies are the original run blocks byte for byte, pinned by sha256, except the repairs listed. A new check is a new group (or a step in one), never a new workflow file.",
- "path_filters": "Dropped: every group runs on every pull_request and push to main (a superset of the original path-filtered runs). workflow_dispatch/schedule triggers are not carried (no manual dispatch, no cron).",
+ "path_filters": "Restored: each folded group carries its original workflow's push / pull_request paths or paths-ignore filter as path_filters (a folded workflow's own path names its tools/tasks/folded copy and its tools/tasks/steps directory). A group the event's changed files do not select records NOT_SELECTED and exits 0 (a run, never a skipped job; pattern StegVerse-org/StegVerse-SDK#561, StegVerse-Labs/Site#1647). Not carried: branches filters, workflow_dispatch/schedule triggers (no manual dispatch, no cron), job-level if, and GitHub's 300-changed-file rule (an undeterminable diff selects every group).",
  "repairs": [],
  "folded_from_commit": "98216f7c3affd48ec7d03a7e789094d9b49070b3",
  "groups": [
@@ -75,6 +75,44 @@
     "python_version": "3.11",
     "artifact_name": "curiosity-motive-custody-envelope",
     "artifact_if_no_files_found": "error"
+   },
+   "path_filters": {
+    "pull_request": {
+     "paths": [
+      "schemas/curiosity-motive-admission.schema.json",
+      "tools/check_curiosity_motive_admission.py",
+      "tools/check_curiosity_motive_admission_release.py",
+      "tools/check_curiosity_motive_admission_release_v3.py",
+      "examples/curiosity-motive-admission.example.json",
+      "tests/test_curiosity_motive_admission.py",
+      "tests/test_custody_record_envelope.py",
+      "receipts/curiosity-motive-admission-validation.json",
+      "outbound/curiosity-motive-admission-manifest.json",
+      "receipts/master-records-curiosity-motive-custody-ack.json",
+      "records/custody-chain-semantics-reopening-001.json",
+      "docs/CURIOSITY_MOTIVE_ADMISSION_MIRROR_HANDOFF.md",
+      "tools/tasks/folded/curiosity-motive-admission.yml",
+      "tools/tasks/steps/curiosity-motive-admission.validate/**"
+     ]
+    },
+    "push": {
+     "paths": [
+      "schemas/curiosity-motive-admission.schema.json",
+      "tools/check_curiosity_motive_admission.py",
+      "tools/check_curiosity_motive_admission_release.py",
+      "tools/check_curiosity_motive_admission_release_v3.py",
+      "examples/curiosity-motive-admission.example.json",
+      "tests/test_curiosity_motive_admission.py",
+      "tests/test_custody_record_envelope.py",
+      "receipts/curiosity-motive-admission-validation.json",
+      "outbound/curiosity-motive-admission-manifest.json",
+      "receipts/master-records-curiosity-motive-custody-ack.json",
+      "records/custody-chain-semantics-reopening-001.json",
+      "docs/CURIOSITY_MOTIVE_ADMISSION_MIRROR_HANDOFF.md",
+      "tools/tasks/folded/curiosity-motive-admission.yml",
+      "tools/tasks/steps/curiosity-motive-admission.validate/**"
+     ]
+    }
    }
   },
   {
@@ -109,6 +147,19 @@
     "persist_credentials": "true",
     "timeout_minutes": 30,
     "python_version": "3.11"
+   },
+   "path_filters": {
+    "push": {
+     "paths": [
+      "docs/MASTER_RECORDS_RECEIVER_HANDOFF.md",
+      "schemas/master-record-pointer-update.schema.json",
+      "data/master-record-pointer-update.example.json",
+      "tools/check_master_records_receiver_handoff.py",
+      "tools/tasks/folded/master-records-receiver-handoff.yml",
+      "tools/tasks/steps/master-records-receiver-handoff.validate/**",
+      "README.md"
+     ]
+    }
    }
   },
   {
@@ -124,6 +175,11 @@
      "name": "Workflow files equal the registered surfaces; catalog verifies ALLOW",
      "run_file": "tools/tasks/steps/workflow-surface-registry.validate/01-registry.sh",
      "run_sha256": "811824e88664923006be2eeb35632d710f5504145967f61632ad9e8fbdcb35ca"
+    },
+    {
+     "name": "Folded groups keep their original path filters (NOT_SELECTED, never skipped)",
+     "run_file": "tools/tasks/steps/workflow-surface-registry.validate/02-original-path-filters.sh",
+     "run_sha256": "9db82fbdf49b831995929ec2919b6ead95a650d1b9929cfb760742654aa3dbc7"
     }
    ],
    "artifacts": [],
